@@ -1,7 +1,7 @@
 import { Button } from '@nextui-org/button'
-import { BackgroundBeams } from './components/ui/background-beams'
+import { BackgroundBeams } from '../../components/ui/background-beams'
 
-function App() {
+function Home() {
 	return (
 		<div className='h-dvh flex'>
 			<BackgroundBeams />
@@ -26,4 +26,4 @@ function App() {
 	)
 }
 
-export default App
+export default Home
