@@ -6,11 +6,11 @@ const {
 /** @type {import('tailwindcss').Config} */
 export default {
 	darkMode: ['class'],
-	content: [
-		'./index.html',
-		'./src/**/*.{ts,tsx,js,jsx}',
-		'./node_modules/@nextui-org/theme/dist/components/(button|ripple|spinner).js',
-	],
+  content: [
+    "./index.html",
+    "./src/**/*.{ts,tsx,js,jsx}",
+    "./node_modules/@nextui-org/theme/dist/components/(button|ripple|spinner).js"
+  ],
 	theme: {
 		extend: {
 			borderRadius: {
