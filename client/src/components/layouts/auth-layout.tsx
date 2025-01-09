@@ -1,3 +1,5 @@
+import { BackgroundCircles } from '../ui/background-circles'
+
 type AuthLayoutProps = {
 	children: React.ReactNode
 	heading: string
@@ -7,7 +9,8 @@ type AuthLayoutProps = {
 const AuthLayout = ({ children, heading, subheading }: AuthLayoutProps) => {
 	return (
 		<div className='h-dvh flex'>
-			<div className='my-auto text-center mx-auto space-y-8 p-2'>
+			<BackgroundCircles />
+			<div className='my-auto text-center mx-auto space-y-8 p-2 z-10'>
 				<div>
 					<h1 className='scroll-m-20 text-4xl font-extrabold tracking-tighter leading-normal lg:leading-relaxed'>
 						{heading} to{' '}

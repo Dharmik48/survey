@@ -4,7 +4,7 @@ import { Button } from '@nextui-org/button'
 import { Link } from 'react-router'
 import { z } from 'zod'
 
-const loginFormSchema = z.object({
+const registerFormSchema = z.object({
 	email: z.string().email(),
 	password: z.string().min(8, 'Requires min 8 characters.'),
 })
@@ -14,39 +14,39 @@ const defaultValues = {
 	password: '',
 }
 
-const LoginForm = () => {
-	const onSubmit = (values: z.infer<typeof loginFormSchema>) => {
+const RegisterForm = () => {
+	const onSubmit = (values: z.infer<typeof registerFormSchema>) => {
 		console.log(values)
 	}
 
 	return (
 		<Form
+			schema={registerFormSchema}
 			onSubmit={onSubmit}
-			schema={loginFormSchema}
 			defaultValues={defaultValues}
-			className='space-y-4 bg-background px-8 py-12 rounded-lg border shadow'
+			className='space-y-4 bg-background border rounded-lg px-8 py-12 shadow'
 		>
 			{form => (
 				<>
 					<Input
-						control={form.control}
+						type='email'
 						name='email'
 						label='Email'
-						type='email'
+						control={form.control}
 						variant='dashed'
 					/>
 					<Input
-						control={form.control}
+						type='password'
 						name='password'
 						label='Password'
-						type='password'
+						control={form.control}
 						variant='dashed'
 					/>
-					<Button type='submit'>Submit</Button>
+					<Button type='submit'>Register</Button>
 					<p className='!mt-8'>
-						Don't have an account?{' '}
-						<Link to={'/auth/register'} className='text-primary underline'>
-							Create now
+						Already have an account?{' '}
+						<Link to={'/auth/login'} className='text-primary underline'>
+							Login
 						</Link>
 					</p>
 				</>
@@ -55,4 +55,4 @@ const LoginForm = () => {
 	)
 }
 
-export default LoginForm
+export default RegisterForm
