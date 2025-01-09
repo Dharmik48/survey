@@ -7,8 +7,10 @@ import {
 	FormMessage,
 } from '../form'
 import { Input as ShadcnInput } from '../input'
+import { Eye, EyeOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { HTMLInputTypeAttribute } from 'react'
+import { HTMLInputTypeAttribute, useState } from 'react'
+import { Button } from '../button'
 
 type InputProps = {
 	label: string
@@ -32,19 +34,44 @@ const Input = ({
 	type = 'text',
 	variant = 'default',
 }: InputProps) => {
+	const [showPassword, setShowPassword] = useState(false)
+
 	return (
 		<FormField
 			control={control}
 			name={name}
-			render={field => (
+			render={({ field }) => (
 				<FormItem className={cn(className?.container, 'text-left')}>
 					<FormLabel>{label}</FormLabel>
 					<FormControl>
-						<ShadcnInput
-							type={type}
-							{...field}
-							className={cn(className?.input, variants[variant])}
-						/>
+						{type !== 'password' ? (
+							<ShadcnInput
+								type={type}
+								{...field}
+								className={cn(className?.input, variants[variant])}
+							/>
+						) : (
+							<div className='flex relative'>
+								<ShadcnInput
+									type={showPassword ? 'text' : 'password'}
+									{...field}
+									className={cn(className?.input, variants[variant], 'pr-10')}
+								/>
+								<Button
+									title={showPassword ? 'Hide password' : 'Show password'}
+									variant={'ghost'}
+									className='absolute right-0 ml-full group hover:bg-transparent'
+									onClick={() => setShowPassword(prev => !prev)}
+									type='button'
+								>
+									{!showPassword ? (
+										<Eye className='group-hover:scale-110 group-hover:text-primary transition-transform-colors' />
+									) : (
+										<EyeOff className='group-hover:scale-110 group-hover:text-primary transition-transform-colors' />
+									)}
+								</Button>
+							</div>
+						)}
 					</FormControl>
 					<FormMessage />
 				</FormItem>
