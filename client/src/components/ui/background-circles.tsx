@@ -39,8 +39,9 @@ export const BackgroundCircles = React.memo(
 					className
 				)}
 			>
+				<div className='h-2/3 mt-auto w-full bg-gradient-to-b from-transparent via-background to-background z-[1]'></div>
 				<svg
-					className='z-0 h-full w-full pointer-events-none absolute'
+					className='z-0 h-full w-full pointer-events-none absolute -translate-y-[20%] scale-125 lg:scale-100 lg:-translate-y-[5%]'
 					width='100%'
 					height='100%'
 					viewBox='0 0 800 500'
@@ -52,7 +53,7 @@ export const BackgroundCircles = React.memo(
 							key={path}
 							d={path}
 							strokeOpacity={colorScheme === 'dark' ? '0.05' : '0.25'}
-							strokeWidth='0.5'
+							className='stroke-2 md:stroke-[0.5]'
 							stroke='url(#paint0_radial_242_278)'
 						></path>
 					))}
@@ -67,7 +68,7 @@ export const BackgroundCircles = React.memo(
 						></motion.path>
 					))}
 					<defs>
-						{paths.map((path, index) => (
+						{paths.map((_path, index) => (
 							<motion.linearGradient
 								id={`linearGradient-${index}`}
 								key={`gradient-${index}`}
