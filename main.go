@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/dharmik48/survey/controller"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 )
-
 
 func main() {
 	err := godotenv.Load(".env.local")
@@ -22,6 +22,7 @@ func main() {
 	r := mux.NewRouter()
 
 	// function handlers
+	r.HandleFunc("/api/signup", controller.Signup).Methods(http.MethodPost)
 
 	// start server
 	var addr string

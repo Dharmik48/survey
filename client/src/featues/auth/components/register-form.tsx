@@ -15,8 +15,14 @@ const defaultValues = {
 }
 
 const RegisterForm = () => {
-	const onSubmit = (values: z.infer<typeof registerFormSchema>) => {
-		console.log(values)
+	const onSubmit = async (values: z.infer<typeof registerFormSchema>) => {
+		const res = await fetch('http://localhost:3000/api/signup', {
+			method: 'POST',
+			body: JSON.stringify(values),
+		})
+
+		const json = await res.json()
+		console.log(json)
 	}
 
 	return (
