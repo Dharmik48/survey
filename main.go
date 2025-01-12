@@ -7,6 +7,7 @@ import (
 	"os"
 
 	"github.com/dharmik48/survey/controller"
+	"github.com/dharmik48/survey/database"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 )
@@ -16,7 +17,10 @@ func main() {
 
 	if err != nil { log.Fatal("Error loading .env: ", err) }
 
-	port := os.Getenv("PORT")
+	PORT := os.Getenv("PORT")
+	DATABASE_URL := os.Getenv("DATABASE_URL")
+
+	database.Connect(DATABASE_URL)
 
 	// router
 	r := mux.NewRouter()
@@ -27,10 +31,10 @@ func main() {
 	// start server
 	var addr string
 
-	if port == "" {
+	if PORT == "" {
 		addr = "0.0.0.0:3000"
 	} else {
-		addr = fmt.Sprintf("0.0.0.0:%v", port)
+		addr = fmt.Sprintf("0.0.0.0:%v", PORT)
 	}
 
 	server := &http.Server{
