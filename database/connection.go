@@ -8,8 +8,11 @@ import (
 	"gorm.io/gorm"
 )
 
+var DB *gorm.DB
+
 func Connect(url string) {
-	con, err := gorm.Open(postgres.Open(url))
+	con, err := gorm.Open(postgres.Open(url), &gorm.Config{TranslateError: true})
+	DB = con
 
 	if err != nil {	log.Fatal("Could not connect to database.") }
 

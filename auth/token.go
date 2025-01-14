@@ -16,10 +16,12 @@ func (e *ErrMissingTokenSecret) Error()	string {
 	return "Missing token secret."
 }
 
-func Hash(password string) (string, error) {
-	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+func Hash(password *string) error {
+	hash, err := bcrypt.GenerateFromPassword([]byte(*password), bcrypt.DefaultCost)
 
-	return string(hash), err
+	*password = string(hash)
+
+	return err
 }
 
 func GenerateToken(email string) (string, error) {
