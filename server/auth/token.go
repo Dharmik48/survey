@@ -7,21 +7,13 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/joho/godotenv"
-	"golang.org/x/crypto/bcrypt"
 )
+
 
 type ErrMissingTokenSecret struct{}
 
-func (e *ErrMissingTokenSecret) Error()	string {
+func (e *ErrMissingTokenSecret) Error() string {
 	return "Missing token secret."
-}
-
-func Hash(password *string) error {
-	hash, err := bcrypt.GenerateFromPassword([]byte(*password), bcrypt.DefaultCost)
-
-	*password = string(hash)
-
-	return err
 }
 
 func GenerateToken(email string) (string, error) {

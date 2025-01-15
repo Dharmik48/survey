@@ -1,13 +1,13 @@
-package controller
+package api
 
 import (
 	"encoding/json"
 	"errors"
 	"net/http"
 
-	"github.com/dharmik48/survey/auth"
 	"github.com/dharmik48/survey/database"
 	"github.com/dharmik48/survey/models"
+	"github.com/dharmik48/survey/utils"
 	"github.com/go-playground/validator/v10"
 	"gorm.io/gorm"
 )
@@ -29,7 +29,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// hash password
-	if err := auth.Hash(&user.Password); err != nil {
+	if err := utils.Hash(&user.Password); err != nil {
 		http.Error(w, "Failed to hash password.", http.StatusInternalServerError)
 		return
 	}
