@@ -1,5 +1,6 @@
 import { Button } from '@nextui-org/button'
 import { BackgroundBeams } from '../../components/ui/background-beams'
+import { Link } from 'react-router'
 
 function Home() {
 	return (
@@ -17,9 +18,11 @@ function Home() {
 						Build and share surveys that uncover insights, helping you make
 						informed decisions.
 					</p>
-					<Button color='primary' size='lg'>
-						Get Started
-					</Button>
+					<Link to={'/auth/login'} className='inline-block'>
+						<Button color='primary' size='lg'>
+							Get Started
+						</Button>
+					</Link>
 				</div>
 			</div>
 		</div>
