@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/dharmik48/survey/controller"
+	"github.com/dharmik48/survey/api"
 	"github.com/dharmik48/survey/database"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
@@ -26,7 +26,7 @@ func main() {
 	r := mux.NewRouter()
 
 	// function handlers
-	r.HandleFunc("/api/signup", controller.Signup).Methods(http.MethodPost)
+	r.HandleFunc("/api/signup", api.Signup).Methods(http.MethodPost)
 
 	// start server
 	var addr string
