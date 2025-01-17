@@ -1,7 +1,9 @@
 import Form from '@/components/ui/form/form'
 import Input from '@/components/ui/form/input'
+import { Response } from '@/types/api'
 import { Button } from '@nextui-org/button'
 import { Link } from 'react-router'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 const loginFormSchema = z.object({
@@ -15,8 +17,18 @@ const defaultValues = {
 }
 
 const LoginForm = () => {
-	const onSubmit = (values: z.infer<typeof loginFormSchema>) => {
-		console.log(values)
+	const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
+		const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/login`, {
+			method: 'POST',
+			credentials: 'include',
+			body: JSON.stringify(values),
+		})
+
+		const json: Response = await res.json()
+
+		if (json.status === 'error') return toast.error(json.message)
+
+		toast.success(json.message)
 	}
 
 	return (
