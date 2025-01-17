@@ -5,6 +5,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/dharmik48/survey/models"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/joho/godotenv"
 )
@@ -16,7 +17,7 @@ func (e *ErrMissingTokenSecret) Error() string {
 	return "Missing token secret."
 }
 
-func GenerateToken(email string) (string, error) {
+func GenerateToken(user models.User) (string, error) {
 	err := godotenv.Load(".env.local")
 
 	if err != nil { log.Fatal("Error loading .env: ", err) }
@@ -26,7 +27,7 @@ func GenerateToken(email string) (string, error) {
 	if TOKEN_SECRET == "" { return "", &ErrMissingTokenSecret{} }
 
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"email": email,
+		"id": user.ID,
 		"exp": time.Now().Add(time.Hour * 24 * 7).Unix(),
 	})
 

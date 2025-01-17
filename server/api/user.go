@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 	"net/http"
+	"time"
 
+	"github.com/dharmik48/survey/auth"
 	"github.com/dharmik48/survey/database"
 	"github.com/dharmik48/survey/models"
 	"github.com/dharmik48/survey/types"
@@ -102,7 +104,21 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO: JWT
+	jwt, err := auth.GenerateToken(user)
+
+	if err != nil {
+		Error(w, "Failed to login.", http.StatusInternalServerError)
+		return
+	}
+
+	http.SetCookie(w, &http.Cookie{
+		Name: "jwt",
+		Value: jwt,
+		Expires: time.Now().Add(time.Hour * 24 * 7),
+		HttpOnly: true,
+		SameSite: http.SameSiteStrictMode,
+		Secure: true,
+	})
 
 	res := types.Response{
 		Status: types.Success,
@@ -112,5 +128,4 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(res)
-	return
 }
