@@ -27,6 +27,7 @@ func main() {
 
 	// function handlers
 	r.HandleFunc("/api/signup", api.Signup).Methods(http.MethodPost)
+	r.HandleFunc("/api/login", api.Login).Methods(http.MethodPost)
 
 	// start server
 	var addr string
