@@ -1,14 +1,10 @@
 import Form from '@/components/ui/form/form'
 import Input from '@/components/ui/form/input'
 import { useLogin } from '@/hooks/auth'
+import { loginFormSchema } from '@/types/auth'
 import { Button } from '@nextui-org/button'
 import { Link, Navigate } from 'react-router'
 import { z } from 'zod'
-
-const loginFormSchema = z.object({
-	email: z.string().email(),
-	password: z.string().min(8, 'Requires min 8 characters.'),
-})
 
 const defaultValues = {
 	email: '',

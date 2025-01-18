@@ -1,15 +1,10 @@
 import Form from '@/components/ui/form/form'
 import Input from '@/components/ui/form/input'
-import { Response } from '@/types/api'
+import { useRegister } from '@/hooks/auth'
+import { registerFormSchema } from '@/types/auth'
 import { Button } from '@nextui-org/button'
-import { Link, useNavigate } from 'react-router'
-import { toast } from 'sonner'
+import { Link, Navigate } from 'react-router'
 import { z } from 'zod'
-
-const registerFormSchema = z.object({
-	email: z.string().email(),
-	password: z.string().min(8, 'Requires min 8 characters.'),
-})
 
 const defaultValues = {
 	email: '',
@@ -17,20 +12,13 @@ const defaultValues = {
 }
 
 const RegisterForm = () => {
-	const navigate = useNavigate()
+	const register = useRegister()
 
 	const onSubmit = async (values: z.infer<typeof registerFormSchema>) => {
-		const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/signup`, {
-			method: 'POST',
-			body: JSON.stringify(values),
-		})
-
-		const json: Response = await res.json()
-		if (json.status === 'error') return toast.error(json.message)
-
-		toast.success(json.message)
-		return navigate('/auth/login')
+		register.mutate(values)
 	}
+
+	if (register.isSuccess) return <Navigate to={'/auth/login'} />
 
 	return (
 		<Form
@@ -55,7 +43,9 @@ const RegisterForm = () => {
 						control={form.control}
 						variant='dashed'
 					/>
-					<Button type='submit'>Register</Button>
+					<Button type='submit' isLoading={register.isPending}>
+						Register
+					</Button>
 					<p className='!mt-8'>
 						Already have an account?{' '}
 						<Link to={'/auth/login'} className='text-primary underline'>
