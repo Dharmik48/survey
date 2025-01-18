@@ -11,16 +11,14 @@ const loginFormSchema = z.object({
 })
 
 const defaultValues = {
-	email: 'd@d.com',
-	password: '123123123',
+	email: '',
+	password: '',
 }
 
 const LoginForm = () => {
 	const login = useLogin()
 
 	const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
-		console.log('😞')
-
 		login.mutate(values)
 	}
 
