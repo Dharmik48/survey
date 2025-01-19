@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -124,6 +125,38 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		Status: types.Success,
 		Message: "Logged in successfully",
 		Data: map[string]any{"id": user.ID},
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(res)
+}
+
+func GetUser(w http.ResponseWriter, r *http.Request) {
+	var user models.UserWithoutPassword
+	cookie, err := r.Cookie("jwt")
+
+	if err != nil {
+		fmt.Println(err)
+		Error(w, "Not authenticated.", http.StatusUnauthorized)
+		return
+	}
+
+	claims, err := auth.VerifyToken(cookie.Value)
+	if err != nil {
+		Error(w, "Invalid token.", http.StatusUnauthorized)
+		return
+	}
+
+	if res := database.DB.Model(&models.User{}).First(&user, "id = ?", claims.ID); res.Error != nil {
+		fmt.Println(res.Error)
+		Error(w, "Failed to fetch user details.", http.StatusInternalServerError)
+		return
+	}
+
+	res := types.Response{
+		Status: types.Success,
+		Message: "Success",
+		Data: user,
 	}
 
 	w.Header().Set("Content-Type", "application/json")
