@@ -35,7 +35,7 @@ export const BackgroundCircles = React.memo(
 		return (
 			<div
 				className={cn(
-					'absolute h-full w-full inset-0 [mask-size:40px] [mask-repeat:no-repeat] flex items-center justify-center',
+					'absolute h-full w-full inset-0 [mask-size:40px] [mask-repeat:no-repeat] flex items-center justify-center overflow-hidden',
 					className
 				)}
 			>
@@ -52,7 +52,7 @@ export const BackgroundCircles = React.memo(
 						<path
 							key={path}
 							d={path}
-							strokeOpacity={colorScheme === 'dark' ? '0.05' : '0.25'}
+							strokeOpacity={colorScheme === 'dark' ? '0.085' : '0.5'}
 							className='stroke-2 md:stroke-[0.5]'
 							stroke='url(#paint0_radial_242_278)'
 						></path>
