@@ -1,8 +1,10 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Response } from '@/types/api'
 import { toast } from 'sonner'
 import { z } from 'zod'
 import { loginFormSchema, registerFormSchema } from '@/types/auth'
+import { User } from '@/types/user'
+import { useCallback } from 'react'
 
 export const useRegister = () => {
 	return useMutation({
@@ -27,6 +29,13 @@ export const useRegister = () => {
 }
 
 export const useLogin = () => {
+	const queryClient = useQueryClient()
+
+	const setUser = useCallback(
+		(data: User) => queryClient.setQueryData(['user'], data),
+		[queryClient]
+	)
+
 	return useMutation({
 		mutationFn: async (data: z.infer<typeof loginFormSchema>) => {
 			const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/login`, {
@@ -42,6 +51,29 @@ export const useLogin = () => {
 			return json
 		},
 		onError: error => toast.error(error.message),
-		onSuccess: data => toast.success(data.message),
+		onSuccess: data => {
+			setUser(data.data as User)
+			toast.success(data.message)
+		},
+	})
+}
+
+export const useUser = () => {
+	return useQuery({
+		queryFn: async () => {
+			const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/user`, {
+				credentials: 'include',
+			})
+
+			const json: Response = await res.json()
+
+			if (json.status === 'error') throw Error(json.message)
+			console.log(json.data)
+
+			return json.data
+		},
+		queryKey: ['user'],
+		staleTime: Infinity,
+		gcTime: Infinity,
 	})
 }
