@@ -2,14 +2,12 @@ package auth
 
 import (
 	"fmt"
-	"log"
-	"os"
 	"time"
 
+	"github.com/dharmik48/survey/config"
 	"github.com/dharmik48/survey/models"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"
-	"github.com/joho/godotenv"
 )
 
 
@@ -24,40 +22,29 @@ func (e *ErrMissingTokenSecret) Error() string {
 }
 
 func GenerateToken(user models.User) (string, error) {
-	err := godotenv.Load(".env.local")
-
-	if err != nil { log.Fatal("Error loading .env: ", err) }
-
-	TOKEN_SECRET := os.Getenv("TOKEN_SECRET")
-
-	if TOKEN_SECRET == "" { return "", &ErrMissingTokenSecret{} }
+	config := config.New()
 
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"id": user.ID,
 		"exp": time.Now().Add(time.Hour * 24 * 7).Unix(),
 	})
 
-	s, err := t.SignedString([]byte(TOKEN_SECRET))
+	s, err := t.SignedString([]byte(config.JWTSecret))
 
 	return s, err
 }
 
 func VerifyToken(token string) (*Claims, error) {
 	var claims Claims
-	err := godotenv.Load(".env.local")
 
-	if err != nil { log.Fatal("Error loading .env: ", err) }
-
-	TOKEN_SECRET := os.Getenv("TOKEN_SECRET")
-
-	if TOKEN_SECRET == "" { return nil, &ErrMissingTokenSecret{} }
+	config := config.New()
 
 	t, err := jwt.ParseWithClaims(token, &claims, func(t *jwt.Token) (interface{}, error) {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method")
 		}
 
-		return []byte(TOKEN_SECRET), nil
+		return []byte(config.JWTSecret), nil
 	})
 
 	if err != nil { return nil, err }
