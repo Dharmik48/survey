@@ -1,13 +1,10 @@
 import Form from '@/components/ui/form/form'
 import Input from '@/components/ui/form/input'
+import { useLogin } from '@/hooks/auth'
+import { loginFormSchema } from '@/types/auth'
 import { Button } from '@nextui-org/button'
-import { Link } from 'react-router'
+import { Link, Navigate } from 'react-router'
 import { z } from 'zod'
-
-const loginFormSchema = z.object({
-	email: z.string().email(),
-	password: z.string().min(8, 'Requires min 8 characters.'),
-})
 
 const defaultValues = {
 	email: '',
@@ -15,9 +12,13 @@ const defaultValues = {
 }
 
 const LoginForm = () => {
-	const onSubmit = (values: z.infer<typeof loginFormSchema>) => {
-		console.log(values)
+	const login = useLogin()
+
+	const onSubmit = async (values: z.infer<typeof loginFormSchema>) => {
+		login.mutate(values)
 	}
+
+	if (login.isSuccess) return <Navigate to={`/`} />
 
 	return (
 		<Form
@@ -42,7 +43,9 @@ const LoginForm = () => {
 						type='password'
 						variant='dashed'
 					/>
-					<Button type='submit'>Submit</Button>
+					<Button type='submit' isLoading={login.isPending}>
+						Submit
+					</Button>
 					<p className='!mt-8'>
 						Don't have an account?{' '}
 						<Link to={'/auth/register'} className='text-primary underline'>

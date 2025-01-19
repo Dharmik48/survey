@@ -1,13 +1,10 @@
 import Form from '@/components/ui/form/form'
 import Input from '@/components/ui/form/input'
+import { useRegister } from '@/hooks/auth'
+import { registerFormSchema } from '@/types/auth'
 import { Button } from '@nextui-org/button'
-import { Link } from 'react-router'
+import { Link, Navigate } from 'react-router'
 import { z } from 'zod'
-
-const registerFormSchema = z.object({
-	email: z.string().email(),
-	password: z.string().min(8, 'Requires min 8 characters.'),
-})
 
 const defaultValues = {
 	email: '',
@@ -15,15 +12,13 @@ const defaultValues = {
 }
 
 const RegisterForm = () => {
-	const onSubmit = async (values: z.infer<typeof registerFormSchema>) => {
-		const res = await fetch('http://localhost:3000/api/signup', {
-			method: 'POST',
-			body: JSON.stringify(values),
-		})
+	const register = useRegister()
 
-		const json = await res.json()
-		console.log(json)
+	const onSubmit = async (values: z.infer<typeof registerFormSchema>) => {
+		register.mutate(values)
 	}
+
+	if (register.isSuccess) return <Navigate to={'/auth/login'} />
 
 	return (
 		<Form
@@ -48,7 +43,9 @@ const RegisterForm = () => {
 						control={form.control}
 						variant='dashed'
 					/>
-					<Button type='submit'>Register</Button>
+					<Button type='submit' isLoading={register.isPending}>
+						Register
+					</Button>
 					<p className='!mt-8'>
 						Already have an account?{' '}
 						<Link to={'/auth/login'} className='text-primary underline'>

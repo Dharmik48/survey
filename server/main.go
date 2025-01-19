@@ -4,32 +4,29 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/dharmik48/survey/api"
+	"github.com/dharmik48/survey/config"
 	"github.com/dharmik48/survey/database"
 	"github.com/gorilla/mux"
-	"github.com/joho/godotenv"
 )
 
 func main() {
-	err := godotenv.Load(".env.local")
+	env := config.New()
 
-	if err != nil { log.Fatal("Error loading .env: ", err) }
-
-	PORT := os.Getenv("PORT")
-	DATABASE_URL := os.Getenv("DATABASE_URL")
-
-	database.Connect(DATABASE_URL)
+	database.Connect(env.DatabaseURL)
 
 	// router
 	r := mux.NewRouter()
 
 	// function handlers
 	r.HandleFunc("/api/signup", api.Signup).Methods(http.MethodPost)
+	r.HandleFunc("/api/login", api.Login).Methods(http.MethodPost)
+	r.HandleFunc("/api/user", api.GetUser).Methods(http.MethodGet)
 
 	// start server
 	var addr string
+	PORT := env.Port
 
 	if PORT == "" {
 		addr = "0.0.0.0:3000"
