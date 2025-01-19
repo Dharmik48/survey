@@ -43,7 +43,7 @@ const LoginForm = () => {
 						type='password'
 						variant='dashed'
 					/>
-					<Button type='submit' isLoading={login.isPending}>
+					<Button type='submit' isLoading={login.isPending} color='primary'>
 						Submit
 					</Button>
 					<p className='!mt-8'>

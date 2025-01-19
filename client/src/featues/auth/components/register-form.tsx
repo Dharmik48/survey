@@ -43,7 +43,7 @@ const RegisterForm = () => {
 						control={form.control}
 						variant='dashed'
 					/>
-					<Button type='submit' isLoading={register.isPending}>
+					<Button type='submit' isLoading={register.isPending} color='primary'>
 						Register
 					</Button>
 					<p className='!mt-8'>
