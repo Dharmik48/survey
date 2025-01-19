@@ -68,7 +68,6 @@ export const useUser = () => {
 			const json: Response = await res.json()
 
 			if (json.status === 'error') throw Error(json.message)
-			console.log(json.data)
 
 			return json.data
 		},
