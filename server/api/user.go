@@ -121,10 +121,14 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		Secure: true,
 	})
 
+	var userWithoutPassword models.UserWithoutPassword
+
+	utils.ExtractUserWithoutPassword(user, &userWithoutPassword)
+
 	res := types.Response{
 		Status: types.Success,
 		Message: "Logged in successfully",
-		Data: map[string]any{"id": user.ID},
+		Data: userWithoutPassword,
 	}
 
 	w.Header().Set("Content-Type", "application/json")
