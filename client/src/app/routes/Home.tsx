@@ -18,11 +18,9 @@ function Home() {
 						Build and share surveys that uncover insights, helping you make
 						informed decisions.
 					</p>
-					<Link to={'/auth/login'} className='inline-block'>
-						<Button color='primary' size='lg'>
-							Get Started
-						</Button>
-					</Link>
+					<Button as={Link} color='primary' size='lg' to={'/auth/login'}>
+						Get Started
+					</Button>
 				</div>
 			</div>
 		</div>
