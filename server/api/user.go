@@ -3,7 +3,6 @@ package api
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -140,7 +139,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	cookie, err := r.Cookie("jwt")
 
 	if err != nil {
-		fmt.Println(err)
 		Error(w, "Not authenticated.", http.StatusUnauthorized)
 		return
 	}
@@ -152,7 +150,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if res := database.DB.Model(&models.User{}).First(&user, "id = ?", claims.ID); res.Error != nil {
-		fmt.Println(res.Error)
 		Error(w, "Failed to fetch user details.", http.StatusInternalServerError)
 		return
 	}
