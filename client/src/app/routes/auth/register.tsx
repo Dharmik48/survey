@@ -6,7 +6,7 @@ import { Navigate } from 'react-router'
 const Register = () => {
 	const user = useUser()
 
-	if (user.isSuccess) return <Navigate to={'/'} replace />
+	if (user.isSuccess) return <Navigate to={'/dashboard'} replace />
 
 	return (
 		<AuthLayout

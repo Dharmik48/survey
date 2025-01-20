@@ -18,7 +18,7 @@ const LoginForm = () => {
 		login.mutate(values)
 	}
 
-	if (login.isSuccess) return <Navigate to={`/`} />
+	if (login.isSuccess) return <Navigate to={`/dashboard`} />
 
 	return (
 		<Form

@@ -1,4 +1,6 @@
+import { ProtectedRoute } from '@/lib/auth'
 import { createBrowserRouter, RouterProvider } from 'react-router'
+import Dashboard from './routes/dashboard'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const convert = (data: any) => {
@@ -24,6 +26,20 @@ const router = createBrowserRouter([
 	{
 		path: '/auth/register',
 		lazy: () => import('./routes/auth/register').then(convert),
+	},
+	{
+		path: '/dashboard',
+		element: (
+			<ProtectedRoute>
+				<Dashboard />
+			</ProtectedRoute>
+		),
+		// children: [
+		// 	{
+		// 		path: '/dashboard',
+		// 		lazy: () => import('./routes/dashboard/index').then(convert),
+		// 	},
+		// ],
 	},
 ])
 
