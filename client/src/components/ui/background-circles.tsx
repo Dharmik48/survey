@@ -63,8 +63,8 @@ export const BackgroundCircles = React.memo(
 							key={`path-` + index}
 							d={path}
 							stroke={`url(#linearGradient-${index})`}
-							strokeOpacity='0.4'
-							strokeWidth='0.5'
+							strokeOpacity='0.6'
+							className='stroke-2 md:stroke-[0.5]'
 						></motion.path>
 					))}
 					<defs>
@@ -88,7 +88,7 @@ export const BackgroundCircles = React.memo(
 									duration: Math.random() * 10 + 10,
 									ease: 'easeInOut',
 									repeat: Infinity,
-									delay: Math.random() * 10,
+									delay: Math.random() * 2,
 								}}
 							>
 								<stop stopColor='#e11d48' stopOpacity='0'></stop>
