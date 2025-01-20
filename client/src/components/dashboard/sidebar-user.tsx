@@ -15,6 +15,8 @@ import {
 	SidebarMenuItem,
 	useSidebar,
 } from '@/components/ui/sidebar'
+import { useLogout } from '@/hooks/auth'
+import { Navigate } from 'react-router'
 
 export function SidebarUser({
 	user,
@@ -25,7 +27,10 @@ export function SidebarUser({
 		avatar: string
 	}
 }) {
+	const logout = useLogout()
 	const { isMobile } = useSidebar()
+
+	if (logout.isSuccess) return <Navigate to={'/'} replace />
 
 	return (
 		<SidebarMenu>
@@ -70,7 +75,10 @@ export function SidebarUser({
 							</div>
 						</DropdownMenuLabel>
 						<DropdownMenuSeparator />
-						<DropdownMenuItem>
+						<DropdownMenuItem
+							onClick={() => logout.mutate()}
+							className='cursor-pointer'
+						>
 							<LogOut />
 							Log out
 						</DropdownMenuItem>
