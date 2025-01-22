@@ -80,10 +80,10 @@ export const useUser = () => {
 export const useLogout = () => {
 	const queryClient = useQueryClient()
 
-	const setUserNull = useCallback(
-		() => queryClient.setQueryData(['user'], null),
-		[queryClient]
-	)
+	const setUserNull = useCallback(() => {
+		queryClient.setQueryData(['user'], null)
+		queryClient.invalidateQueries({ queryKey: ['user'] })
+	}, [queryClient])
 
 	return useMutation({
 		mutationFn: async () => {
@@ -101,6 +101,6 @@ export const useLogout = () => {
 			return json
 		},
 		onError: error => toast.error(error.message),
-		onSuccess: () => setUserNull,
+		onSuccess: setUserNull,
 	})
 }
