@@ -6,11 +6,12 @@ import {
 	SidebarGroupAction,
 	SidebarGroupContent,
 	SidebarGroupLabel,
+	SidebarHeader,
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from '@/components/ui/sidebar'
-import { Home, Plus } from 'lucide-react'
+import { Command, Home, Plus } from 'lucide-react'
 import { Link } from 'react-router'
 import { SidebarUser } from './sidebar-user'
 import { useUser } from '@/hooks/auth'
@@ -30,6 +31,20 @@ const AppSidebar = () => {
 
 	return (
 		<Sidebar variant='floating'>
+			<SidebarHeader>
+				<SidebarMenu>
+					<SidebarMenuItem>
+						<SidebarMenuButton size='lg' asChild>
+							<Link to='/'>
+								<div className='flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-sidebar-primary-foreground'>
+									<Command className='size-4' />
+								</div>
+								<span className='truncate font-semibold'>SurveySphere</span>
+							</Link>
+						</SidebarMenuButton>
+					</SidebarMenuItem>
+				</SidebarMenu>
+			</SidebarHeader>
 			<SidebarContent>
 				<SidebarGroup>
 					<SidebarGroupLabel>Dashboard</SidebarGroupLabel>
