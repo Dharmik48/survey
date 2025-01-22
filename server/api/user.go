@@ -27,9 +27,9 @@ func Error(w http.ResponseWriter, message string, code int) {
 }
 
 func Signup(w http.ResponseWriter, r *http.Request) {
-	var user models.User
+	var data types.RegisterSchema
 
-	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
 		Error(w, "Failed to decode JSON.", http.StatusBadRequest)
 		return
 	}
@@ -37,18 +37,18 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	// validation
 	validate := validator.New()
 
-	if err := validate.Struct(user); err != nil {
+	if err := validate.Struct(data); err != nil {
 		Error(w, "Failed to validate data.", http.StatusBadRequest)
 		return
 	}
 
 	// hash password
-	if err := utils.Hash(&user.Password); err != nil {
+	if err := utils.Hash(&data.Password); err != nil {
 		Error(w, "Failed to hash password.", http.StatusInternalServerError)
 		return
 	}
 
-	result := database.DB.Create(&user)
+	result := database.DB.Model(&models.User{}).Create(&data)
 
 	if errors.Is(result.Error, gorm.ErrDuplicatedKey) {
 		Error(w, "Email already exists.", http.StatusConflict)
@@ -63,7 +63,6 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 	res := types.Response{
 		Status: types.Success,
 		Message: "Registration successful",
-		Data: map[string]any{"id": user.ID },
 	}
 
 	w.Header().Set("Content-Type", "application/json")
@@ -72,7 +71,7 @@ func Signup(w http.ResponseWriter, r *http.Request) {
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	var data models.User
+	var data types.LoginSchema
 	var user models.User
 
 	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
@@ -120,7 +119,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		Secure: true,
 	})
 
-	var userWithoutPassword models.UserWithoutPassword
+	var userWithoutPassword types.UserWithoutPassword
 
 	utils.ExtractUserWithoutPassword(user, &userWithoutPassword)
 
@@ -135,7 +134,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
-	var user models.UserWithoutPassword
+	var user types.UserWithoutPassword
 	cookie, err := r.Cookie("jwt")
 
 	if err != nil {
