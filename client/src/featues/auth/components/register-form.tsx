@@ -7,6 +7,7 @@ import { Link, Navigate } from 'react-router'
 import { z } from 'zod'
 
 const defaultValues = {
+	username: '',
 	email: '',
 	password: '',
 }
@@ -29,6 +30,13 @@ const RegisterForm = () => {
 		>
 			{form => (
 				<>
+					<Input
+						type='text'
+						name='username'
+						label='Username'
+						control={form.control}
+						variant='dashed'
+					/>
 					<Input
 						type='email'
 						name='email'

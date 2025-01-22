@@ -62,7 +62,7 @@ const AppSidebar = () => {
 				<SidebarUser
 					user={{
 						email: user.email,
-						name: 'A',
+						name: user.username,
 						avatar: '',
 					}}
 				/>
