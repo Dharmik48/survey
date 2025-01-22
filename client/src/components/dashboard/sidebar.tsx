@@ -13,6 +13,8 @@ import {
 import { Home, Plus } from 'lucide-react'
 import { Link } from 'react-router'
 import { SidebarUser } from './sidebar-user'
+import { useUser } from '@/hooks/auth'
+import { User } from '@/types/user'
 
 const dashboard = [
 	{
@@ -23,6 +25,9 @@ const dashboard = [
 ]
 
 const AppSidebar = () => {
+	const { data } = useUser()
+	const user = data as User
+
 	return (
 		<Sidebar variant='floating'>
 			<SidebarContent>
@@ -56,7 +61,7 @@ const AppSidebar = () => {
 			<SidebarFooter>
 				<SidebarUser
 					user={{
-						email: 'a@a.com',
+						email: user.email,
 						name: 'A',
 						avatar: '',
 					}}

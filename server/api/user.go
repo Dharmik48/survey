@@ -163,3 +163,22 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(res)
 }
+
+func Logout(w http.ResponseWriter, r *http.Request) {
+	http.SetCookie(w, &http.Cookie{
+		Name: "jwt",
+		Value: "",
+		Expires: time.Now(),
+		SameSite: http.SameSiteStrictMode,
+		HttpOnly: true,
+		Secure: true,
+	})
+
+	res := types.Response{
+		Status: types.Success,
+		Message: "Logged out successfully",
+	}
+
+	w.Header().Set("Content/Type", "application/json")
+	json.NewEncoder(w).Encode(res)
+}

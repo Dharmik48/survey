@@ -6,7 +6,7 @@ import { Navigate } from 'react-router'
 const Login = () => {
 	const user = useUser()
 
-	if (user.isSuccess) return <Navigate to={'/dashboard'} replace />
+	if (user.data) return <Navigate to={'/dashboard'} replace />
 
 	return (
 		<AuthLayout heading='Login' subheading='Your Insights Await Login Now'>
