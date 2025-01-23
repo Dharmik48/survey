@@ -34,12 +34,12 @@ const router = createBrowserRouter([
 				<Dashboard />
 			</ProtectedRoute>
 		),
-		// children: [
-		// 	{
-		// 		path: '/dashboard',
-		// 		lazy: () => import('./routes/dashboard/index').then(convert),
-		// 	},
-		// ],
+		children: [
+			{
+				path: '/dashboard',
+				lazy: () => import('./routes/dashboard/dashboard').then(convert),
+			},
+		],
 	},
 ])
 
