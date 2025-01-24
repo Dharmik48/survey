@@ -15,17 +15,6 @@ import (
 	"gorm.io/gorm"
 )
 
-func Error(w http.ResponseWriter, message string, code int) {
-	res := types.Response{
-		Status: types.Error,
-		Message: message,
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(code)
-	json.NewEncoder(w).Encode(res)
-}
-
 func Signup(w http.ResponseWriter, r *http.Request) {
 	var data types.RegisterSchema
 
