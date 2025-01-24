@@ -39,6 +39,10 @@ const router = createBrowserRouter([
 				path: '/dashboard',
 				lazy: () => import('./routes/dashboard/dashboard').then(convert),
 			},
+			{
+				path: '/dashboard/surveys/:id',
+				lazy: () => import('./routes/dashboard/survyes').then(convert),
+			},
 		],
 	},
 ])
