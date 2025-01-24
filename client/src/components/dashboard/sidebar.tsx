@@ -16,6 +16,7 @@ import { Link } from 'react-router'
 import { SidebarUser } from './sidebar-user'
 import { useUser } from '@/hooks/auth'
 import { User } from '@/types/user'
+import { useCreateSurvey } from '@/hooks/survey'
 
 const dashboard = [
 	{
@@ -27,6 +28,7 @@ const dashboard = [
 
 const AppSidebar = () => {
 	const { data } = useUser()
+	const createSurvey = useCreateSurvey()
 	const user = data as User
 
 	return (
@@ -65,7 +67,10 @@ const AppSidebar = () => {
 				</SidebarGroup>
 				<SidebarGroup>
 					<SidebarGroupLabel>Surveys</SidebarGroupLabel>
-					<SidebarGroupAction title='Create Survey'>
+					<SidebarGroupAction
+						title='Create Survey'
+						onClick={() => createSurvey.mutate()}
+					>
 						<Plus /> <span className='sr-only'>Create Survey</span>
 					</SidebarGroupAction>
 					<SidebarGroupContent>
