@@ -10,3 +10,8 @@ type User struct {
 	Password string  `json:"password" validate:"required,min=8,max=64"`
 	types.Model
 }
+
+type Survey struct {
+	Title string `json:"title" validate:"min=3,max=50" gorm:"default:Untitled"`
+	types.Model
+}
