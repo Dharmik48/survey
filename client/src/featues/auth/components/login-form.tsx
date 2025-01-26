@@ -2,7 +2,7 @@ import Form from '@/components/ui/form/form'
 import Input from '@/components/ui/form/input'
 import { useLogin } from '@/hooks/auth'
 import { loginFormSchema } from '@/types/auth'
-import { Button } from '@nextui-org/button'
+import { Button } from "@heroui/button"
 import { Link, Navigate } from 'react-router'
 import { z } from 'zod'
 

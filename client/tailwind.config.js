@@ -1,4 +1,4 @@
-const { nextui } = require('@nextui-org/theme')
+const { heroui } = require("@heroui/theme")
 const {
 	default: flattenColorPalette,
 } = require('tailwindcss/lib/util/flattenColorPalette')
@@ -6,11 +6,11 @@ const {
 /** @type {import('tailwindcss').Config} */
 export default {
 	darkMode: ['class'],
-	content: [
-		'./index.html',
-		'./src/**/*.{ts,tsx,js,jsx}',
-		'./node_modules/@nextui-org/theme/dist/components/(button|ripple|spinner).js',
-	],
+  content: [
+    "./index.html",
+    "./src/**/*.{ts,tsx,js,jsx}",
+    "./node_modules/@heroui/theme/dist/components/(button|dropdown|ripple|spinner|menu|divider|popover).js"
+  ],
 	theme: {
 		extend: {
 			borderRadius: {
@@ -75,7 +75,7 @@ export default {
 			},
 		},
 	},
-	plugins: [require('tailwindcss-animate'), addVariablesForColors, nextui()],
+	plugins: [require('tailwindcss-animate'), addVariablesForColors, heroui()],
 }
 
 function addVariablesForColors({ addBase, theme }) {
