@@ -69,7 +69,7 @@ export const useUser = () => {
 
 			if (json.status === 'error') throw Error(json.message)
 
-			return json.data
+			return json.data as User
 		},
 		queryKey: ['user'],
 		staleTime: Infinity,

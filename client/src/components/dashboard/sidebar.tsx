@@ -15,7 +15,6 @@ import { Command, Home, Plus } from 'lucide-react'
 import { Link } from 'react-router'
 import { SidebarUser } from './sidebar-user'
 import { useUser } from '@/hooks/auth'
-import { User } from '@/types/user'
 import { useCreateSurvey } from '@/hooks/survey'
 
 const dashboard = [
@@ -29,7 +28,6 @@ const dashboard = [
 const AppSidebar = () => {
 	const { data } = useUser()
 	const createSurvey = useCreateSurvey()
-	const user = data as User
 
 	return (
 		<Sidebar variant='floating'>
@@ -74,15 +72,25 @@ const AppSidebar = () => {
 						<Plus /> <span className='sr-only'>Create Survey</span>
 					</SidebarGroupAction>
 					<SidebarGroupContent>
-						<SidebarMenu></SidebarMenu>
+						<SidebarMenu>
+							{data!.surveys?.map(survey => (
+								<SidebarMenuItem key={survey.id}>
+									<SidebarMenuButton asChild>
+										<Link to={`/dashboard/surveys/${survey.id}`}>
+											<span>{survey.title}</span>
+										</Link>
+									</SidebarMenuButton>
+								</SidebarMenuItem>
+							))}
+						</SidebarMenu>
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>
 			<SidebarFooter>
 				<SidebarUser
 					user={{
-						email: user.email,
-						name: user.username,
+						email: data!.email,
+						name: data!.username,
 						avatar: '',
 					}}
 				/>

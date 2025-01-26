@@ -137,7 +137,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if res := database.DB.Model(&models.User{}).First(&user, "id = ?", claims.ID); res.Error != nil {
+	if res := database.DB.Model(&models.User{}).Preload("Surveys").First(&user, "id = ?", claims.ID); res.Error != nil {
 		Error(w, "Failed to fetch user details.", http.StatusInternalServerError)
 		return
 	}

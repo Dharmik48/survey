@@ -41,7 +41,7 @@ const router = createBrowserRouter([
 			},
 			{
 				path: '/dashboard/surveys/:id',
-				lazy: () => import('./routes/dashboard/survyes').then(convert),
+				lazy: () => import('./routes/dashboard/surveys').then(convert),
 			},
 		],
 	},
