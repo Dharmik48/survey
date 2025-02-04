@@ -11,13 +11,14 @@ import { Eye, EyeOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { HTMLInputTypeAttribute, useState } from 'react'
 import { Button } from '../button'
+import { Textarea } from '@/components/ui/textarea'
 
 type InputProps = {
 	label: string
 	name: string
 	control: Control<FieldValues>
 	className?: { container?: string; input?: string }
-	type?: HTMLInputTypeAttribute
+	type?: HTMLInputTypeAttribute | 'textarea'
 	variant?: 'default' | 'dashed'
 }
 
@@ -45,11 +46,15 @@ const Input = ({
 					<FormLabel>{label}</FormLabel>
 					<FormControl>
 						{type !== 'password' ? (
-							<ShadcnInput
-								type={type}
-								{...field}
-								className={cn(className?.input, variants[variant])}
-							/>
+							type === 'textarea' ? (
+								<Textarea {...field} />
+							) : (
+								<ShadcnInput
+									type={type}
+									{...field}
+									className={cn(className?.input, variants[variant])}
+								/>
+							)
 						) : (
 							<div className='flex relative'>
 								<ShadcnInput
