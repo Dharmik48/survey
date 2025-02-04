@@ -75,7 +75,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if res := database.DB.First(&user, "email = ?", data.Email); res.Error != nil {
+	if res := database.DB.Preload("Surveys").First(&user, "email = ?", data.Email); res.Error != nil {
 		message := "Failed to fetch user details."
 		code := http.StatusInternalServerError
 		if errors.Is(res.Error, gorm.ErrRecordNotFound) {

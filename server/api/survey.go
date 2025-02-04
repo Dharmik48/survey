@@ -8,6 +8,7 @@ import (
 	"github.com/dharmik48/survey/database"
 	"github.com/dharmik48/survey/models"
 	"github.com/dharmik48/survey/types"
+	"github.com/gorilla/mux"
 )
 
 func NewSurvey(w http.ResponseWriter, r *http.Request) {
@@ -54,6 +55,40 @@ func GetSurveys(w http.ResponseWriter, r *http.Request) {
 		Status: types.Success,
 		Message: "Success",
 		Data: surveys,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(res)
+}
+
+func GetSurvey(w http.ResponseWriter, r *http.Request) {
+	var survey models.Survey
+	params := mux.Vars(r)
+	id := params["id"]
+
+	jwt, err := r.Cookie("jwt")
+
+	if err != nil {
+		Error(w, "Not authenticated.", http.StatusUnauthorized)
+		return
+	}
+
+	userID, err := auth.GetIdFromToken(jwt.Value)
+
+	if err != nil {
+		Error(w, "Failed to verify user.", http.StatusInternalServerError)
+		return
+	}
+
+	if res := database.DB.Where("id = ? and user_id = ?", id, userID).First(&survey); res.Error != nil {
+		Error(w, "Could not find survey.", http.StatusNotFound)
+		return
+	}
+
+	res := types.Response{
+		Status: types.Success,
+		Message: "Survey retrieved.",
+		Data: survey,
 	}
 
 	w.Header().Set("Content-Type", "application/json")

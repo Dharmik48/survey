@@ -47,7 +47,6 @@ export const useLogin = () => {
 			const json: Response = await res.json()
 
 			if (json.status === 'error') throw Error(json.message)
-
 			return json
 		},
 		onError: error => toast.error(error.message),

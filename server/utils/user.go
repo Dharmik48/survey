@@ -12,4 +12,5 @@ func ExtractUserWithoutPassword(user models.User, userWithoutPassword *types.Use
 	userWithoutPassword.Email = user.Email
 	userWithoutPassword.Username = user.Username
 	userWithoutPassword.ID = user.ID
+	userWithoutPassword.Surveys = user.Surveys
 }

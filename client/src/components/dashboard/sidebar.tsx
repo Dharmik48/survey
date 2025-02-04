@@ -8,14 +8,31 @@ import {
 	SidebarGroupLabel,
 	SidebarHeader,
 	SidebarMenu,
+	SidebarMenuAction,
 	SidebarMenuButton,
 	SidebarMenuItem,
+	useSidebar,
 } from '@/components/ui/sidebar'
-import { Command, Home, Plus } from 'lucide-react'
+import {
+	Command,
+	Forward,
+	Home,
+	MoreHorizontal,
+	Pen,
+	Plus,
+	Trash2,
+} from 'lucide-react'
 import { Link } from 'react-router'
 import { SidebarUser } from './sidebar-user'
 import { useUser } from '@/hooks/auth'
 import { useCreateSurvey } from '@/hooks/survey'
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '../ui/dropdown-menu'
 
 const dashboard = [
 	{
@@ -27,6 +44,7 @@ const dashboard = [
 
 const AppSidebar = () => {
 	const { data } = useUser()
+	const { isMobile } = useSidebar()
 	const createSurvey = useCreateSurvey()
 
 	return (
@@ -80,6 +98,35 @@ const AppSidebar = () => {
 											<span>{survey.title}</span>
 										</Link>
 									</SidebarMenuButton>
+									<DropdownMenu>
+										<DropdownMenuTrigger asChild>
+											<SidebarMenuAction showOnHover>
+												<MoreHorizontal />
+												<span className='sr-only'>More</span>
+											</SidebarMenuAction>
+										</DropdownMenuTrigger>
+										<DropdownMenuContent
+											className='w-48 rounded-lg'
+											side={isMobile ? 'bottom' : 'right'}
+											align={isMobile ? 'end' : 'start'}
+										>
+											<DropdownMenuItem asChild>
+												<Link to={`/dashboard/surveys/${survey.id}/edit`}>
+													<Pen className='text-muted-foreground' />
+													<span>Edit Survey</span>
+												</Link>
+											</DropdownMenuItem>
+											<DropdownMenuItem>
+												<Forward className='text-muted-foreground' />
+												<span>Share Survey</span>
+											</DropdownMenuItem>
+											<DropdownMenuSeparator />
+											<DropdownMenuItem className='text-danger'>
+												<Trash2 className='text-danger' />
+												<span>Delete Survey</span>
+											</DropdownMenuItem>
+										</DropdownMenuContent>
+									</DropdownMenu>
 								</SidebarMenuItem>
 							))}
 						</SidebarMenu>

@@ -31,8 +31,29 @@ export const useCreateSurvey = () => {
 		},
 		onSuccess: data => {
 			invalidateUser()
-			navigate(`/dashboard/surveys/${data.id}`)
+			navigate(`/dashboard/surveys/${data.id}/edit`)
 		},
+	})
+}
+
+export const useGetSurvey = (id: string) => {
+	return useQuery({
+		queryFn: async () => {
+			const res = await fetch(
+				`${import.meta.env.VITE_BACKEND_URL}/api/surveys/${id}`,
+				{
+					credentials: 'include',
+				}
+			)
+
+			const json: Response = await res.json()
+
+			if (json.status === 'error') throw new Error(json.message)
+
+			return json.data as Survey
+		},
+		queryKey: ['survey', id],
+		staleTime: Infinity,
 	})
 }
 
