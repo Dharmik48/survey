@@ -1,4 +1,13 @@
+import { HTMLInputTypeAttribute } from 'react'
 import { z } from 'zod'
+
+export type FieldTypes = HTMLInputTypeAttribute | 'textarea'
+
+export type Field = {
+	label: string
+	name: string
+	type: FieldTypes
+}
 
 export type Survey = {
 	id: string

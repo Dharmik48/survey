@@ -1,4 +1,4 @@
-const { heroui } = require("@heroui/theme")
+const { heroui } = require('@heroui/theme')
 const {
 	default: flattenColorPalette,
 } = require('tailwindcss/lib/util/flattenColorPalette')
@@ -75,7 +75,11 @@ export default {
 			},
 		},
 	},
-	plugins: [require('tailwindcss-animate'), addVariablesForColors, heroui()],
+	plugins: [
+		require('tailwindcss-animate'),
+		addVariablesForColors,
+		heroui({ defaultTheme: 'dark' }),
+	],
 }
 
 function addVariablesForColors({ addBase, theme }) {

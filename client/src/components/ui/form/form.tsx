@@ -9,6 +9,7 @@ type FormProps = {
 	onSubmit: (values: z.infer<z.Schema>) => void
 	children: (methods: UseFormReturn) => React.ReactNode
 	className?: string
+	id?: string
 }
 
 const Form = ({
@@ -17,6 +18,7 @@ const Form = ({
 	children,
 	onSubmit,
 	className,
+	...props
 }: FormProps) => {
 	const form = useForm<z.infer<typeof schema>>({
 		resolver: zodResolver(schema),
@@ -25,7 +27,11 @@ const Form = ({
 
 	return (
 		<FormProvider {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className={className}>
+			<form
+				onSubmit={form.handleSubmit(onSubmit)}
+				className={className}
+				id={props?.id}
+			>
 				{children(form)}
 			</form>
 		</FormProvider>
