@@ -21,6 +21,17 @@ const EditSurvey = () => {
 		setFields(data.questions)
 	}, [data])
 
+	useEffect(() => {
+		const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+			e.preventDefault()
+		}
+		window.addEventListener('beforeunload', handleBeforeUnload)
+
+		return () => {
+			window.removeEventListener('beforeunload', handleBeforeUnload)
+		}
+	}, [])
+
 	// TODO: replace with skeleton
 	if (isPending || !data) return <h1>loading...</h1>
 
