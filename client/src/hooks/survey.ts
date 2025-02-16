@@ -1,5 +1,5 @@
 import { Response } from '@/types/api'
-import { Survey } from '@/types/survey'
+import { FieldWithSurveyID, Survey } from '@/types/survey'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router'
@@ -69,5 +69,28 @@ export const useGetSurveys = () => {
 			return json.data as Survey[]
 		},
 		queryKey: ['surveys'],
+	})
+}
+
+export const useUpdateSurvey = () => {
+	return useMutation({
+		mutationFn: async (data: {
+			survey: Survey
+			questions: FieldWithSurveyID[]
+		}) => {
+			const res = await fetch(
+				`${import.meta.env.VITE_BACKEND_URL}/api/surveys/${data.survey.id}`,
+				{
+					method: 'PUT',
+					credentials: 'include',
+					body: JSON.stringify(data),
+				}
+			)
+			const json = await res.json()
+
+			if (json.status === 'error') throw new Error(json.message)
+
+			return json.data as { survey: Survey; questions: FieldWithSurveyID[] }
+		},
 	})
 }

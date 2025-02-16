@@ -19,10 +19,15 @@ import { Label } from '@/components/ui/label'
 
 type NewFieldDialogProps = {
 	setFields: React.Dispatch<React.SetStateAction<Field[]>>
+	fields: Field[]
 	children: React.ReactNode
 }
 
-const NewFieldDialog = ({ children, setFields }: NewFieldDialogProps) => {
+const NewFieldDialog = ({
+	children,
+	setFields,
+	fields,
+}: NewFieldDialogProps) => {
 	const [step, setStep] = useState(1)
 	const [isOpen, setIsOpen] = useState(false)
 	const [fieldType, setFieldType] = useState<FieldTypes>('text')
@@ -38,6 +43,7 @@ const NewFieldDialog = ({ children, setFields }: NewFieldDialogProps) => {
 				<NewFieldForm
 					type={fieldType}
 					setFields={setFields}
+					fields={fields}
 					setDialogOpen={setIsOpen}
 				/>
 			),

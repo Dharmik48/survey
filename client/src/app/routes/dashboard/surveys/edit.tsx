@@ -1,32 +1,53 @@
 import Form from '@/components/ui/form/form'
 import Input from '@/components/ui/form/input'
-import { useGetSurvey } from '@/hooks/survey'
+import { useGetSurvey, useUpdateSurvey } from '@/hooks/survey'
 import { Field, surveySchema } from '@/types/survey'
 import { Button } from '@/components/ui/button'
 import { useParams } from 'react-router'
 import { Separator } from '@/components/ui/separator'
 import { PlusCircle } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import NewFieldDialog from '@/featues/survyes/new-field-dialog'
+import { z } from 'zod'
 
 const EditSurvey = () => {
 	const params = useParams()
-	const { data, isPending } = useGetSurvey(params.id!)
-
 	const [fields, setFields] = useState<Field[]>([])
+	const { data, isPending } = useGetSurvey(params.id!)
+	const updateSurvey = useUpdateSurvey()
+
+	useEffect(() => {
+		if (!data) return
+		setFields(data.questions)
+	}, [data])
 
 	// TODO: replace with skeleton
-	if (isPending) return <h1>loading...</h1>
+	if (isPending || !data) return <h1>loading...</h1>
+
+	const handleSubmit = (values: z.infer<typeof surveySchema>) => {
+		const updatedData = {
+			survey: { ...data, ...values },
+			questions: fields.map(field => ({ ...field, surveyID: data.id })),
+		}
+		updateSurvey.mutate(updatedData)
+	}
 
 	return (
 		<>
-			<h2 className='scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0 mb-8'>
-				Editing {data?.title}
-			</h2>
+			<div className='flex flex-col md:flex-row gap-4 justify-between scroll-m-20 border-b pb-2  first:mt-0 mb-8'>
+				<h2 className='text-3xl font-semibold tracking-tight'>
+					Editing {data?.title}
+				</h2>
+				<Button form='save'>Save</Button>
+			</div>
 			<Form
 				schema={surveySchema}
-				defaultValues={{ title: data?.title, description: '' }}
-				onSubmit={() => {}}
+				defaultValues={{
+					title: data?.title,
+					description: data?.description ?? '',
+				}}
+				onSubmit={handleSubmit}
+				id='save'
 			>
 				{form => (
 					<>
@@ -53,21 +74,20 @@ const EditSurvey = () => {
 									))}
 								</div>
 							)}
-
-							<div className='flex gap-4 items-center justify-center mt-8'>
-								<Separator className='flex-1' />
-								<NewFieldDialog setFields={setFields}>
-									<Button variant={'outline'}>
-										<PlusCircle />
-										Add Field
-									</Button>
-								</NewFieldDialog>
-								<Separator className='flex-1' />
-							</div>
 						</div>
 					</>
 				)}
 			</Form>
+			<div className='flex gap-4 items-center justify-center mt-8'>
+				<Separator className='flex-1' />
+				<NewFieldDialog setFields={setFields} fields={fields}>
+					<Button variant={'outline'} type='button'>
+						<PlusCircle />
+						Add Field
+					</Button>
+				</NewFieldDialog>
+				<Separator className='flex-1' />
+			</div>
 		</>
 	)
 }

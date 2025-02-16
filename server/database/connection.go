@@ -16,5 +16,5 @@ func Connect(url string) {
 
 	if err != nil {	log.Fatal("Could not connect to database.") }
 
-	con.AutoMigrate(&models.User{}, &models.Survey{})
+	con.AutoMigrate(&models.User{}, &models.Survey{}, &models.Question{})
 }

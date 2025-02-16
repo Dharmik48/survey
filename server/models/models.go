@@ -24,6 +24,16 @@ type User struct {
 
 type Survey struct {
 	Title string `json:"title" validate:"min=3,max=50" gorm:"default:Untitled"`
+	Description string `json:"description"`
 	UserID uuid.UUID `json:"userID"`
+	Questions []Question `json:"questions"`
+	Model
+}
+
+type Question struct {
+	Label string `json:"label" validate:"required,min=3,max=35"`
+	Name string `json:"name" validate:"required,min=3,max=35,uniqueIndex:idx_survey_name"`
+	Type string `json:"type"`
+	SurveyID uuid.UUID `json:"surveyID"`
 	Model
 }

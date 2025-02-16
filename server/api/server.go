@@ -25,6 +25,7 @@ func NewServer(addr string) (*http.Server) {
 	r.HandleFunc("/api/survey", NewSurvey).Methods(http.MethodPost)
 	r.HandleFunc("/api/surveys", GetSurveys).Methods(http.MethodGet)
 	r.HandleFunc("/api/surveys/{id}", GetSurvey).Methods(http.MethodGet)
+	r.HandleFunc("/api/surveys/{id}", UpdateSurveyDetails).Methods(http.MethodPut)
 
 	server := &http.Server{
 		Addr:    addr,

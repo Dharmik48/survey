@@ -9,12 +9,21 @@ export type Field = {
 	type: FieldTypes
 }
 
+export type FieldWithSurveyID = {
+	label: string
+	name: string
+	type: FieldTypes
+	surveyID: string
+}
+
 export type Survey = {
 	id: string
 	title: string
+	description?: string
 	createdAt: string
 	deletedAt: string
 	updatedAt: string
+	questions: FieldWithSurveyID[]
 }
 
 export const surveySchema = z.object({
