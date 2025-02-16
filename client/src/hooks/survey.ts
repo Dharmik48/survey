@@ -3,6 +3,7 @@ import { FieldWithSurveyID, Survey } from '@/types/survey'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router'
+import { toast } from 'sonner'
 
 export const useCreateSurvey = () => {
 	const navigate = useNavigate()
@@ -91,6 +92,12 @@ export const useUpdateSurvey = () => {
 			if (json.status === 'error') throw new Error(json.message)
 
 			return json.data as { survey: Survey; questions: FieldWithSurveyID[] }
+		},
+		onSuccess: () => {
+			toast.success('Save Successful')
+		},
+		onError: err => {
+			toast.error(err.message)
 		},
 	})
 }
