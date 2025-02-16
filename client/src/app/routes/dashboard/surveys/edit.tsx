@@ -5,7 +5,7 @@ import { Field, surveySchema } from '@/types/survey'
 import { Button } from '@/components/ui/button'
 import { useParams } from 'react-router'
 import { Separator } from '@/components/ui/separator'
-import { PlusCircle } from 'lucide-react'
+import { LoaderCircle, PlusCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import NewFieldDialog from '@/featues/survyes/new-field-dialog'
 import { z } from 'zod'
@@ -49,7 +49,15 @@ const EditSurvey = () => {
 				<h2 className='text-3xl font-semibold tracking-tight'>
 					Editing {data?.title}
 				</h2>
-				<Button form='save'>Save</Button>
+				<Button form='save' disabled={updateSurvey.isPending}>
+					{updateSurvey.isPending ? (
+						<>
+							<LoaderCircle className='animate-spin' /> Saving
+						</>
+					) : (
+						'Save'
+					)}
+				</Button>
 			</div>
 			<Form
 				schema={surveySchema}
