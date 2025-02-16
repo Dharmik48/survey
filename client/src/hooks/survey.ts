@@ -74,6 +74,13 @@ export const useGetSurveys = () => {
 }
 
 export const useUpdateSurvey = () => {
+	const queryClient = useQueryClient()
+
+	const invalidateSurvey = useCallback(
+		(id: string) => queryClient.invalidateQueries({ queryKey: ['survey', id] }),
+		[queryClient]
+	)
+
 	return useMutation({
 		mutationFn: async (data: {
 			survey: Survey
@@ -93,8 +100,9 @@ export const useUpdateSurvey = () => {
 
 			return json.data as { survey: Survey; questions: FieldWithSurveyID[] }
 		},
-		onSuccess: () => {
+		onSuccess: data => {
 			toast.success('Save Successful')
+			invalidateSurvey(data.survey.id)
 		},
 		onError: err => {
 			toast.error(err.message)
