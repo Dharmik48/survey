@@ -127,6 +127,7 @@ func UpdateSurveyDetails(w http.ResponseWriter, r *http.Request) {
 			return err
 		}
 
+		if (len(data.Question) == 0) { return nil }
 		if err := tx.Save(&data.Question).Error; err != nil {
 			return err
 		}
