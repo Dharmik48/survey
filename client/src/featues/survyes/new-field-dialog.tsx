@@ -16,6 +16,7 @@ import FieldTypeSelecor from '@/components/field-type-selector'
 import NewFieldForm from './new-field-form'
 import { Field, FieldTypes } from '@/types/survey'
 import { Label } from '@/components/ui/label'
+import { z } from 'zod'
 
 type NewFieldDialogProps = {
 	setFields: React.Dispatch<React.SetStateAction<Field[]>>
@@ -32,6 +33,13 @@ const NewFieldDialog = ({
 	const [isOpen, setIsOpen] = useState(false)
 	const [fieldType, setFieldType] = useState<FieldTypes>('text')
 
+	const handleSubmit = (values: z.infer<z.Schema>) => {
+		console.log(fieldType)
+
+		setFields((prev: Field[]) => [...prev, { ...values, type: fieldType }])
+		setIsOpen(false)
+	}
+
 	const stepContent = [
 		{
 			title: 'Field Type',
@@ -42,9 +50,9 @@ const NewFieldDialog = ({
 			component: (
 				<NewFieldForm
 					type={fieldType}
-					setFields={setFields}
 					fields={fields}
-					setDialogOpen={setIsOpen}
+					handleSubmit={handleSubmit}
+					action='create'
 				/>
 			),
 		},
@@ -105,6 +113,7 @@ const NewFieldDialog = ({
 							<Label
 								htmlFor={`formField`}
 								className='bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2 inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 cursor-pointer'
+								tabIndex={0}
 							>
 								Okay
 							</Label>

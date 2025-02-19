@@ -5,23 +5,22 @@ import { Field, FieldTypes } from '@/types/survey'
 import { z } from 'zod'
 
 type NewFieldFormProps = {
-	setFields: React.Dispatch<React.SetStateAction<Field[]>>
 	type: FieldTypes
-	setDialogOpen: (open: boolean) => void
 	fields: Field[]
+	handleSubmit: (values: z.infer<z.Schema>) => void
+	defaultValues?: { label: string; name: string }
+	action: 'edit' | 'create'
+	index?: number
 }
 
-const FieldForm = ({
+const NewFieldForm = ({
 	type,
-	setFields,
-	setDialogOpen,
 	fields,
+	handleSubmit,
+	defaultValues,
+	action,
+	index,
 }: NewFieldFormProps) => {
-	const handleSubmit = (values: z.infer<typeof newFieldSchema>) => {
-		setFields((prev: Field[]) => [...prev, { ...values, type }])
-		setDialogOpen(false)
-	}
-
 	const newFieldSchema = z.object({
 		label: z
 			.string()
@@ -31,17 +30,25 @@ const FieldForm = ({
 			.string()
 			.min(3, 'Must be atleast 3 characters')
 			.max(35, 'Cannot be more than 35 characters')
-			.refine(
-				val => !fields.some(field => field.name === val),
-				'Already assigned to another field'
-			),
+			.refine(val => {
+				if (action === 'create')
+					return !fields.some(field => field.name === val)
+
+				return !fields.some((field, i) => {
+					if (i === index) return false
+					return field.name === val
+				})
+			}, 'Already assigned to another field'),
 	})
 
 	switch (type) {
 		default:
 			return (
 				<Form
-					defaultValues={{ label: '', name: '' }}
+					defaultValues={{
+						label: defaultValues?.label ?? '',
+						name: defaultValues?.name ?? '',
+					}}
 					onSubmit={handleSubmit}
 					schema={newFieldSchema}
 					id='new-field-form'
@@ -63,24 +70,6 @@ const FieldForm = ({
 				</Form>
 			)
 	}
-}
-
-const NewFieldForm = ({
-	type,
-	setFields,
-	setDialogOpen,
-	fields,
-}: NewFieldFormProps) => {
-	return (
-		<div>
-			<FieldForm
-				type={type}
-				setFields={setFields}
-				setDialogOpen={setDialogOpen}
-				fields={fields}
-			/>
-		</div>
-	)
 }
 
 export default NewFieldForm

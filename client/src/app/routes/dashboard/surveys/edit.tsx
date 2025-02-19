@@ -1,14 +1,16 @@
 import Form from '@/components/ui/form/form'
-import Input from '@/components/ui/form/input'
+import Input, { Input as InputWrapper } from '@/components/ui/form/input'
 import { useGetSurvey, useUpdateSurvey } from '@/hooks/survey'
 import { Field, surveySchema } from '@/types/survey'
 import { Button } from '@/components/ui/button'
 import { useParams } from 'react-router'
 import { Separator } from '@/components/ui/separator'
-import { LoaderCircle, PlusCircle } from 'lucide-react'
+import { LoaderCircle, Pencil, PlusCircle, Trash } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import NewFieldDialog from '@/featues/survyes/new-field-dialog'
 import { z } from 'zod'
+import EditFieldDialog from '@/featues/survyes/edit-field-dialog'
+import { Label } from '@/components/ui/label'
 
 const EditSurvey = () => {
 	const params = useParams()
@@ -79,24 +81,41 @@ const EditSurvey = () => {
 								type='textarea'
 							/>
 						</div>
-						<div>
-							{!!fields.length && (
-								<div className='border-2 border-dashed rounded-md p-4 space-y-2'>
-									{fields.map((field, i) => (
-										<Input
-											key={field.name + i}
-											label={field.label}
-											name={field.name}
-											control={form.control}
-											type={field.type}
-										/>
-									))}
-								</div>
-							)}
-						</div>
 					</>
 				)}
 			</Form>
+			<div>
+				{!!fields.length && (
+					<div className='border-2 border-dashed rounded-md p-4 space-y-2'>
+						{fields.map((field, i) => (
+							<div
+								className='space-y-2 group flex items-end gap-2 flex-col sm:flex-row'
+								key={field.name + i}
+							>
+								<div className='space-y-2 w-full'>
+									<Label className=''>{field.label}</Label>
+									<InputWrapper variant='default' type={field.type} />
+								</div>
+								<div className='flex gap-2'>
+									<EditFieldDialog
+										field={field}
+										index={i}
+										fields={fields}
+										setFields={setFields}
+									>
+										<Button variant='secondary' type='button' size={'icon'}>
+											<Pencil />
+										</Button>
+									</EditFieldDialog>
+									<Button variant='destructive' type='button' size={'icon'}>
+										<Trash />
+									</Button>
+								</div>
+							</div>
+						))}
+					</div>
+				)}
+			</div>
 			<div className='flex gap-4 items-center justify-center mt-8'>
 				<Separator className='flex-1' />
 				<NewFieldDialog setFields={setFields} fields={fields}>
