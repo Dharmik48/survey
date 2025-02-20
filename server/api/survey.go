@@ -128,8 +128,17 @@ func UpdateSurveyDetails(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if (len(data.Question) == 0) { return nil }
-		if err := tx.Save(&data.Question).Error; err != nil {
-			return err
+
+		for _, question := range data.Question {
+			var err error
+
+			if question.Name == "" {
+				err = tx.Delete(&question).Error
+			} else {
+				err = tx.Save(&data.Question).Error
+			}
+
+			if err != nil { return err }
 		}
 
 		return nil

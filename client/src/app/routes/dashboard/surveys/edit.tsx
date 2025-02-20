@@ -11,6 +11,7 @@ import NewFieldDialog from '@/featues/survyes/new-field-dialog'
 import { z } from 'zod'
 import EditFieldDialog from '@/featues/survyes/edit-field-dialog'
 import { Label } from '@/components/ui/label'
+import DeleteDialog from '@/components/delete-dialog'
 
 const EditSurvey = () => {
 	const params = useParams()
@@ -43,6 +44,12 @@ const EditSurvey = () => {
 			questions: fields.map(field => ({ ...field, surveyID: data.id })),
 		}
 		updateSurvey.mutate(updatedData)
+	}
+
+	const handleDelete = async (field: Field) => {
+		setFields(prev =>
+			prev.map(f => (f.name !== field.name ? f : { ...f, name: null }))
+		)
 	}
 
 	return (
@@ -87,32 +94,41 @@ const EditSurvey = () => {
 			<div>
 				{!!fields.length && (
 					<div className='border-2 border-dashed rounded-md p-4 space-y-2'>
-						{fields.map((field, i) => (
-							<div
-								className='space-y-2 group flex items-end gap-2 flex-col sm:flex-row'
-								key={field.name + i}
-							>
-								<div className='space-y-2 w-full'>
-									<Label className=''>{field.label}</Label>
-									<InputWrapper variant='default' type={field.type} />
-								</div>
-								<div className='flex gap-2'>
-									<EditFieldDialog
-										field={field}
-										index={i}
-										fields={fields}
-										setFields={setFields}
+						{fields.map(
+							(field, i) =>
+								field.name !== null && (
+									<div
+										className='space-y-2 group flex items-end gap-2 flex-col sm:flex-row'
+										key={field.name + i}
 									>
-										<Button variant='secondary' type='button' size={'icon'}>
-											<Pencil />
-										</Button>
-									</EditFieldDialog>
-									<Button variant='destructive' type='button' size={'icon'}>
-										<Trash />
-									</Button>
-								</div>
-							</div>
-						))}
+										<div className='space-y-2 w-full'>
+											<Label className=''>{field.label}</Label>
+											<InputWrapper variant='default' type={field.type} />
+										</div>
+										<div className='flex gap-2'>
+											<EditFieldDialog
+												field={field}
+												index={i}
+												fields={fields}
+												setFields={setFields}
+											>
+												<Button variant='secondary' type='button' size={'icon'}>
+													<Pencil />
+												</Button>
+											</EditFieldDialog>
+											<DeleteDialog handleAgree={() => handleDelete(field)}>
+												<Button
+													variant='destructive'
+													type='button'
+													size={'icon'}
+												>
+													<Trash />
+												</Button>
+											</DeleteDialog>
+										</div>
+									</div>
+								)
+						)}
 					</div>
 				)}
 			</div>

@@ -35,5 +35,7 @@ type Question struct {
 	Name string `json:"name" validate:"required,min=3,max=35,uniqueIndex:idx_survey_name"`
 	Type string `json:"type"`
 	SurveyID uuid.UUID `json:"surveyID"`
-	Model
+	ID       uuid.UUID `json:"id" gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }

@@ -5,13 +5,13 @@ export type FieldTypes = HTMLInputTypeAttribute | 'textarea'
 
 export type Field = {
 	label: string
-	name: string
+	name: string | null
 	type: FieldTypes
 }
 
 export type FieldWithSurveyID = {
 	label: string
-	name: string
+	name: string | null
 	type: FieldTypes
 	surveyID: string
 }

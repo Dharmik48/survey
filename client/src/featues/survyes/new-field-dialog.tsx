@@ -34,8 +34,6 @@ const NewFieldDialog = ({
 	const [fieldType, setFieldType] = useState<FieldTypes>('text')
 
 	const handleSubmit = (values: z.infer<z.Schema>) => {
-		console.log(fieldType)
-
 		setFields((prev: Field[]) => [...prev, { ...values, type: fieldType }])
 		setIsOpen(false)
 	}
