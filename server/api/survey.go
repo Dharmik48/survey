@@ -158,3 +158,45 @@ func UpdateSurveyDetails(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(res)
 }
+
+func DeleteSurvey(w http.ResponseWriter, r *http.Request) {
+	var survey models.Survey
+	params := mux.Vars(r)
+	id := params["id"]
+	cookie, err := r.Cookie("jwt")
+
+	if err != nil {
+		Error(w, "Not authenticated.", http.StatusUnauthorized)
+		return
+	}
+
+	userID, err := auth.GetIdFromToken(cookie.Value);
+
+	if err != nil {
+		Error(w, "Could not verify user.", http.StatusUnauthorized)
+		return
+	}
+
+	if err := database.DB.Where("id = ?", id).First(&survey).Error; err != nil {
+		Error(w, "Could not find survey.", http.StatusNotFound)
+		return
+	}
+
+	if userID != survey.UserID {
+		Error(w, "Not allowed.", http.StatusUnauthorized)
+		return
+	}
+
+	if err := database.DB.Delete(&survey).Error; err != nil {
+		Error(w, "Failed to delete survey.", http.StatusInternalServerError)
+		return
+	}
+
+	res := types.Response{
+		Status: types.Success,
+		Message: "Successfuly deleted survey.",
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(res)
+}

@@ -109,3 +109,39 @@ export const useUpdateSurvey = () => {
 		},
 	})
 }
+
+export const useDeleteSurvey = () => {
+	const navigate = useNavigate()
+	const queryClient = useQueryClient()
+
+	const invalidateUser = useCallback(
+		() => queryClient.invalidateQueries({ queryKey: ['user'] }),
+		[queryClient]
+	)
+
+	return useMutation({
+		mutationFn: async (id: string) => {
+			const res = await fetch(
+				`${import.meta.env.VITE_BACKEND_URL}/api/surveys/${id}`,
+				{
+					method: 'DELETE',
+					credentials: 'include',
+				}
+			)
+
+			const json = await res.json()
+
+			if (json.status === 'error') throw new Error(json.message)
+
+			return json as Response
+		},
+		onSuccess: data => {
+			toast.success(data.message)
+			invalidateUser()
+			navigate(`/dashboard`)
+		},
+		onError: err => {
+			toast.error(err.message)
+		},
+	})
+}
