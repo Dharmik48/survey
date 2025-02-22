@@ -187,8 +187,20 @@ func DeleteSurvey(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := database.DB.Delete(&survey).Error; err != nil {
-		Error(w, "Failed to delete survey.", http.StatusInternalServerError)
+	txerr := database.DB.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Unscoped().Model(&survey).Association("Questions").Unscoped().Clear(); err != nil {
+			return err
+		}
+
+		if err := tx.Delete(&survey).Error; err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	if txerr != nil {
+		Error(w, "Faild to delete survey.", http.StatusInternalServerError)
 		return
 	}
 
