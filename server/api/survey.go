@@ -122,6 +122,18 @@ func UpdateSurveyDetails(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var surveyInDB models.Survey
+
+	if err := database.DB.First(&surveyInDB).Where("id = ?", data.Survey.ID).Error; err != nil {
+		Error(w, "Something went wrong.", http.StatusInternalServerError)
+		return
+	}
+
+	if (surveyInDB.Published) {
+		Error(w, "Cannot edit published survey.", http.StatusForbidden)
+		return
+	}
+
 	txerr := database.DB.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Save(&data.Survey).Error; err != nil {
 			return err

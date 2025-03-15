@@ -27,6 +27,7 @@ type Survey struct {
 	Description string `json:"description"`
 	UserID uuid.UUID `json:"userID"`
 	Questions []Question `json:"questions"`
+	Published bool `json:"published"`
 	Model
 }
 

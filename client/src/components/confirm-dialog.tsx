@@ -11,18 +11,18 @@ import {
 } from '@/components/ui/alert-dialog'
 import { CircleAlert } from 'lucide-react'
 
-type DeleteDialogProps = React.PropsWithChildren & {
+type ConfirmDialogProps = React.PropsWithChildren & {
 	title?: string
 	description?: string
 	handleAgree: () => void
 }
 
-export default function DeleteDialog({
+export default function ConfirmDialog({
 	children,
 	title = 'Are you sure?',
 	description = 'Are you sure you want to delete your account? All your data will be removed.',
 	handleAgree,
-}: DeleteDialogProps) {
+}: ConfirmDialogProps) {
 	return (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>{children}</AlertDialogTrigger>

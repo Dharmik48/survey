@@ -24,6 +24,7 @@ export type Survey = {
 	deletedAt: string
 	updatedAt: string
 	questions: FieldWithSurveyID[]
+	published: boolean
 }
 
 export const surveySchema = z.object({

@@ -33,7 +33,7 @@ import {
 	DropdownMenuSeparator,
 	DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
-import DeleteDialog from '../delete-dialog'
+import DeleteDialog from '../confirm-dialog'
 
 const dashboard = [
 	{
@@ -112,12 +112,19 @@ const AppSidebar = () => {
 											side={isMobile ? 'bottom' : 'right'}
 											align={isMobile ? 'end' : 'start'}
 										>
-											<DropdownMenuItem asChild>
-												<Link to={`/dashboard/surveys/${survey.id}/edit`}>
+											{!survey.published ? (
+												<DropdownMenuItem asChild>
+													<Link to={`/dashboard/surveys/${survey.id}/edit`}>
+														<Pen className='text-muted-foreground' />
+														<span>Edit Survey</span>
+													</Link>
+												</DropdownMenuItem>
+											) : (
+												<DropdownMenuItem className='cursor-not-allowed opacity-50'>
 													<Pen className='text-muted-foreground' />
 													<span>Edit Survey</span>
-												</Link>
-											</DropdownMenuItem>
+												</DropdownMenuItem>
+											)}
 											<DropdownMenuItem>
 												<Forward className='text-muted-foreground' />
 												<span>Share Survey</span>

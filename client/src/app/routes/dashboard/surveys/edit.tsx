@@ -11,7 +11,7 @@ import NewFieldDialog from '@/featues/survyes/new-field-dialog'
 import { z } from 'zod'
 import EditFieldDialog from '@/featues/survyes/edit-field-dialog'
 import { Label } from '@/components/ui/label'
-import DeleteDialog from '@/components/delete-dialog'
+import ConfirmDialog from '@/components/confirm-dialog'
 
 const EditSurvey = () => {
 	const params = useParams()
@@ -52,21 +52,46 @@ const EditSurvey = () => {
 		)
 	}
 
+	const handlePublish = async () => {
+		const updatedData = {
+			survey: { ...data, published: true },
+			questions: fields.map(field => ({ ...field, surveyID: data.id })),
+		}
+		updateSurvey.mutate(updatedData)
+	}
+
 	return (
 		<>
 			<div className='flex flex-col md:flex-row gap-4 justify-between scroll-m-20 border-b pb-2  first:mt-0 mb-8'>
 				<h2 className='text-3xl font-semibold tracking-tight'>
 					Editing {data?.title}
 				</h2>
-				<Button form='save' disabled={updateSurvey.isPending}>
-					{updateSurvey.isPending ? (
-						<>
-							<LoaderCircle className='animate-spin' /> Saving
-						</>
-					) : (
-						'Save'
-					)}
-				</Button>
+				<div className='space-x-2'>
+					<ConfirmDialog
+						handleAgree={handlePublish}
+						title='Publish Survery?'
+						description='This will make the survey shareable but you will not be able to edit it any longer.'
+					>
+						<Button
+							variant='secondary'
+							disabled={data.published || updateSurvey.isPending}
+						>
+							Publish
+						</Button>
+					</ConfirmDialog>
+					<Button
+						form='save'
+						disabled={data.published || updateSurvey.isPending}
+					>
+						{updateSurvey.isPending ? (
+							<>
+								<LoaderCircle className='animate-spin' /> Saving
+							</>
+						) : (
+							'Save'
+						)}
+					</Button>
+				</div>
 			</div>
 			<Form
 				schema={surveySchema}
@@ -105,43 +130,51 @@ const EditSurvey = () => {
 											<Label className=''>{field.label}</Label>
 											<InputWrapper variant='default' type={field.type} />
 										</div>
-										<div className='flex gap-2'>
-											<EditFieldDialog
-												field={field}
-												index={i}
-												fields={fields}
-												setFields={setFields}
-											>
-												<Button variant='secondary' type='button' size={'icon'}>
-													<Pencil />
-												</Button>
-											</EditFieldDialog>
-											<DeleteDialog handleAgree={() => handleDelete(field)}>
-												<Button
-													variant='destructive'
-													type='button'
-													size={'icon'}
+										{!data.published && (
+											<div className='flex gap-2'>
+												<EditFieldDialog
+													field={field}
+													index={i}
+													fields={fields}
+													setFields={setFields}
 												>
-													<Trash />
-												</Button>
-											</DeleteDialog>
-										</div>
+													<Button
+														variant='secondary'
+														type='button'
+														size={'icon'}
+													>
+														<Pencil />
+													</Button>
+												</EditFieldDialog>
+												<ConfirmDialog handleAgree={() => handleDelete(field)}>
+													<Button
+														variant='destructive'
+														type='button'
+														size={'icon'}
+													>
+														<Trash />
+													</Button>
+												</ConfirmDialog>
+											</div>
+										)}
 									</div>
 								)
 						)}
 					</div>
 				)}
 			</div>
-			<div className='flex gap-4 items-center justify-center mt-8'>
-				<Separator className='flex-1' />
-				<NewFieldDialog setFields={setFields} fields={fields}>
-					<Button variant={'outline'} type='button'>
-						<PlusCircle />
-						Add Field
-					</Button>
-				</NewFieldDialog>
-				<Separator className='flex-1' />
-			</div>
+			{!data.published && (
+				<div className='flex gap-4 items-center justify-center mt-8'>
+					<Separator className='flex-1' />
+					<NewFieldDialog setFields={setFields} fields={fields}>
+						<Button variant={'outline'} type='button'>
+							<PlusCircle />
+							Add Field
+						</Button>
+					</NewFieldDialog>
+					<Separator className='flex-1' />
+				</div>
+			)}
 		</>
 	)
 }
