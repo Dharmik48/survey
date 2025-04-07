@@ -124,7 +124,7 @@ func UpdateSurveyDetails(w http.ResponseWriter, r *http.Request) {
 
 	var surveyInDB models.Survey
 
-	if err := database.DB.First(&surveyInDB).Where("id = ?", data.Survey.ID).Error; err != nil {
+	if err := database.DB.Where("id = ?", data.Survey.ID).First(&surveyInDB).Error; err != nil {
 		Error(w, "Something went wrong.", http.StatusInternalServerError)
 		return
 	}
