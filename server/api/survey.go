@@ -96,6 +96,26 @@ func GetSurvey(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(res)
 }
 
+func GetPublishedSurvey(w http.ResponseWriter, r *http.Request) {
+	var survey models.Survey
+	params := mux.Vars(r)
+	id := params["id"]
+
+	if res := database.DB.Preload("Questions").Where("id = ? ", id).Where("published = true").First(&survey); res.Error != nil {
+		Error(w, "Could not find survey.", http.StatusNotFound)
+		return
+	}
+
+	res := types.Response{
+		Status: types.Success,
+		Message: "Survey retrieved.",
+		Data: survey,
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(res)
+}
+
 func UpdateSurveyDetails(w http.ResponseWriter, r *http.Request) {
 	var data types.UpdateSurveyDetailsSchema
 	cookie, err := r.Cookie("jwt")

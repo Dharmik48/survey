@@ -28,6 +28,11 @@ func NewServer(addr string) (*http.Server) {
 	r.HandleFunc("/api/surveys/{id}", UpdateSurveyDetails).Methods(http.MethodPut)
 	r.HandleFunc("/api/surveys/{id}", DeleteSurvey).Methods(http.MethodDelete)
 
+	r.HandleFunc("/api/surveys/published/{id}", GetPublishedSurvey).Methods(http.MethodGet)
+
+	// responses
+	r.HandleFunc("/api/response/{surveyID}", NewResponse).Methods(http.MethodPost)
+
 	server := &http.Server{
 		Addr:    addr,
 		Handler: r,

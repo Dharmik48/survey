@@ -40,3 +40,12 @@ type Question struct {
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
 }
+
+type Response struct {
+	SurveyID uuid.UUID `json:"surveyID"`
+	QuestionID uuid.UUID `json:"questionID"`
+	Value string `json:"value"`
+	ID       uuid.UUID `json:"id" gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+}
