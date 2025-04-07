@@ -49,6 +49,14 @@ const router = createBrowserRouter([
 			},
 		],
 	},
+	{
+		path: '/surveys/:id',
+		lazy: () => import('./routes/surveys').then(convert),
+	},
+	{
+		path: '/success',
+		lazy: () => import('./routes/success').then(convert),
+	},
 ])
 
 export const AppRouter = () => {

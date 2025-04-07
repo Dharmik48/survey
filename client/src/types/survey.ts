@@ -4,12 +4,14 @@ import { z } from 'zod'
 export type FieldTypes = HTMLInputTypeAttribute | 'textarea'
 
 export type Field = {
+	id: string
 	label: string
 	name: string | null
 	type: FieldTypes
 }
 
 export type FieldWithSurveyID = {
+	id: string
 	label: string
 	name: string | null
 	type: FieldTypes

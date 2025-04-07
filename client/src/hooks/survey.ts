@@ -58,6 +58,24 @@ export const useGetSurvey = (id: string) => {
 	})
 }
 
+export const useGetPublishedSurvey = (id: string) => {
+	return useQuery({
+		queryFn: async () => {
+			const res = await fetch(
+				`${import.meta.env.VITE_BACKEND_URL}/api/surveys/published/${id}`
+			)
+
+			const json: Response = await res.json()
+
+			if (json.status === 'error') throw new Error(json.message)
+
+			return json.data as Survey
+		},
+		queryKey: ['survey', id],
+		staleTime: Infinity,
+	})
+}
+
 export const useGetSurveys = () => {
 	return useQuery({
 		queryFn: async () => {
@@ -139,6 +157,37 @@ export const useDeleteSurvey = () => {
 			toast.success(data.message)
 			invalidateUser()
 			navigate(`/dashboard`)
+		},
+		onError: err => {
+			toast.error(err.message)
+		},
+	})
+}
+
+export const useAddEntry = () => {
+	const navigate = useNavigate()
+
+	return useMutation({
+		mutationFn: async (data: {
+			survey: Survey
+			data: { id: string; value: unknown }[]
+		}) => {
+			const res = await fetch(
+				`${import.meta.env.VITE_BACKEND_URL}/api/response/${data.survey.id}`,
+				{
+					method: 'POST',
+					body: JSON.stringify(data.data),
+				}
+			)
+
+			const json = await res.json()
+
+			if (json.status === 'error') throw new Error(json.message)
+
+			return json
+		},
+		onSuccess: () => {
+			navigate(`/success`)
 		},
 		onError: err => {
 			toast.error(err.message)

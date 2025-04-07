@@ -41,7 +41,11 @@ const EditSurvey = () => {
 	const handleSubmit = (values: z.infer<typeof surveySchema>) => {
 		const updatedData = {
 			survey: { ...data, ...values },
-			questions: fields.map(field => ({ ...field, surveyID: data.id })),
+			questions: fields.map(field => ({
+				...field,
+				surveyID: data.id,
+				schemaType: field.type,
+			})),
 		}
 		updateSurvey.mutate(updatedData)
 	}
