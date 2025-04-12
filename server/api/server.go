@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/dharmik48/survey/auth"
 	"github.com/dharmik48/survey/types"
 	"github.com/gorilla/mux"
 )
@@ -19,7 +20,7 @@ func NewServer(addr string) (*http.Server) {
 	r.HandleFunc("/api/logout", Logout).Methods(http.MethodGet)
 
 	s := r.NewRoute().Subrouter()
-	s.Use()
+	s.Use(authMiddleware)
 
 	// surveys
 	r.HandleFunc("/api/survey", NewSurvey).Methods(http.MethodPost)
@@ -52,8 +53,20 @@ func Error(w http.ResponseWriter, message string, code int) {
 	json.NewEncoder(w).Encode(res)
 }
 
-// func authenticationMiddleware(next http.Handler) http.Handler {
-// 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+func authMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		jwt, err := r.Cookie("jwt")
 
-// 	})
-// }
+		if err != nil {
+			Error(w, "Not authenticated.", http.StatusUnauthorized)
+			return
+		}
+
+		if _, err := auth.GetIdFromToken(jwt.Value); err != nil {
+			Error(w, "Failed to verify user.", http.StatusInternalServerError)
+			return
+		}
+
+		next.ServeHTTP(w, r)
+	})
+}
