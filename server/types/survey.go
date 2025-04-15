@@ -21,9 +21,9 @@ type SurveyResponseSchema struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
-type ResponseSchemaWithQuestion struct {
+type ResponseSchema struct {
 	SurveyID uuid.UUID `json:"surveyID"`
-	Question models.Question `json:"question"`
+	QuestionID uuid.UUID `json:"questionID"`
 	Value string `json:"value"`
 	ID       uuid.UUID `json:"id" gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
 	CreatedAt time.Time `json:"createdAt"`

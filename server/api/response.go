@@ -53,7 +53,7 @@ func NewResponse(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetResponses(w http.ResponseWriter, r *http.Request) {
-	var responses []types.ResponseSchemaWithQuestion
+	var responses []types.ResponseSchema
 	var survey models.Survey
 	params := mux.Vars(r)
 	surveyID := params["surveyID"]
