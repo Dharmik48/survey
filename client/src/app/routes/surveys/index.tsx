@@ -1,15 +1,16 @@
 import Form from '@/components/ui/form/form'
 import Input from '@/components/ui/form/input'
-import { useAddEntry, useGetPublishedSurvey } from '@/hooks/survey'
+import { useGetPublishedSurvey } from '@/hooks/survey'
 import { useParams } from 'react-router'
 import { z } from 'zod'
 import { defaultValues, inputTypeToSchemaType } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
+import { useNewResponse } from '@/hooks/response'
 
 const Survey = () => {
 	const params = useParams()
 	const { data, isPending } = useGetPublishedSurvey(params.id!)
-	const addEntry = useAddEntry()
+	const newResponse = useNewResponse()
 
 	// TODO: replace with skeleton
 	if (isPending || !data) return <h1>loading...</h1>
@@ -26,7 +27,7 @@ const Survey = () => {
 			value: values[key],
 		}))
 
-		addEntry.mutate({ survey: data, data: responseData })
+		newResponse.mutate({ survey: data, data: responseData })
 	}
 
 	return (

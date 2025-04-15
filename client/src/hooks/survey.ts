@@ -163,34 +163,3 @@ export const useDeleteSurvey = () => {
 		},
 	})
 }
-
-export const useAddEntry = () => {
-	const navigate = useNavigate()
-
-	return useMutation({
-		mutationFn: async (data: {
-			survey: Survey
-			data: { id: string; value: unknown }[]
-		}) => {
-			const res = await fetch(
-				`${import.meta.env.VITE_BACKEND_URL}/api/response/${data.survey.id}`,
-				{
-					method: 'POST',
-					body: JSON.stringify(data.data),
-				}
-			)
-
-			const json = await res.json()
-
-			if (json.status === 'error') throw new Error(json.message)
-
-			return json
-		},
-		onSuccess: () => {
-			navigate(`/success`)
-		},
-		onError: err => {
-			toast.error(err.message)
-		},
-	})
-}
