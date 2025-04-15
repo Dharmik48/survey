@@ -33,6 +33,7 @@ func NewServer(addr string) (*http.Server) {
 
 	// responses
 	r.HandleFunc("/api/response/{surveyID}", NewResponse).Methods(http.MethodPost)
+	s.HandleFunc("/api/response/{surveyID}", GetResponses).Methods(http.MethodGet)
 
 	server := &http.Server{
 		Addr:    addr,

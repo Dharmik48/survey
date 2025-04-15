@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/dharmik48/survey/models"
+	"github.com/google/uuid"
 )
 
 type UpdateSurveyDetailsSchema struct {
@@ -16,6 +17,15 @@ type SurveyResponseSchema struct {
 	QuestionID string `json:"questionID"`
 	Value any `json:"value"`
 	ID       string `json:"id" gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+}
+
+type ResponseSchemaWithQuestion struct {
+	SurveyID uuid.UUID `json:"surveyID"`
+	Question models.Question `json:"question"`
+	Value string `json:"value"`
+	ID       uuid.UUID `json:"id" gorm:"type:uuid;default:gen_random_uuid();primaryKey"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
 }
