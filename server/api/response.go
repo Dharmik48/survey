@@ -77,7 +77,7 @@ func GetResponses(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := database.DB.Model(&models.Response{}).Preload("question_id").Where("survey_id = ?", surveyID).Find(&responses).Error; err != nil {
+	if err := database.DB.Model(&models.Response{}).Where("survey_id = ?", surveyID).Find(&responses).Error; err != nil {
 		Error(w, "Failed to get responses.", http.StatusInternalServerError)
 		return
 	}
