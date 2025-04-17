@@ -15,6 +15,7 @@ export default function FieldTypeSelecor({
 	const items = [
 		{ value: 'text', label: 'Text' },
 		{ value: 'textarea', label: 'Textarea' },
+		{ value: 'number', label: 'Number' },
 	]
 
 	return (
