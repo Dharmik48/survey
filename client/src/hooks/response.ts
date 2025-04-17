@@ -1,4 +1,4 @@
-import { Survey } from '@/types/survey'
+import { Response, Survey } from '@/types/survey'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useNavigate } from 'react-router'
 import { toast } from 'sonner'
@@ -48,7 +48,7 @@ export const useResponses = (surveyID: string) => {
 
 			if (json.status === 'error') throw new Error(json.message)
 
-			return json
+			return json.data as Response[]
 		},
 	})
 }

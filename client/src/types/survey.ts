@@ -29,6 +29,15 @@ export type Survey = {
 	published: boolean
 }
 
+export type Response = {
+	createdAt: string
+	id: string
+	questionID: string
+	surveyID: string
+	updatedAt: string
+	value: string
+}
+
 export const surveySchema = z.object({
 	title: z
 		.string()
