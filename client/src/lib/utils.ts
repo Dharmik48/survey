@@ -24,3 +24,14 @@ export const inputTypeToSchemaType: { [key: string]: ZodString } = {
 export const defaultValues: { [key: string]: unknown } = {
 	text: '',
 }
+
+export const groupBy = <T>(
+	array: T[],
+	predicate: (value: T, index: number, array: T[]) => string
+) => {
+	if (!array) return {}
+	return array.reduce((acc, value, index, array) => {
+		;(acc[predicate(value, index, array)] ||= []).push(value)
+		return acc
+	}, {} as { [key: string]: T[] })
+}
