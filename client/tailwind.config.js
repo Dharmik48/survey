@@ -1,4 +1,4 @@
-const { nextui } = require('@nextui-org/theme')
+const { heroui } = require('@heroui/theme')
 const {
 	default: flattenColorPalette,
 } = require('tailwindcss/lib/util/flattenColorPalette')
@@ -9,7 +9,7 @@ export default {
   content: [
     "./index.html",
     "./src/**/*.{ts,tsx,js,jsx}",
-    "./node_modules/@nextui-org/theme/dist/components/(button|ripple|spinner).js"
+    "./node_modules/@heroui/theme/dist/components/(button|dropdown|ripple|spinner|menu|divider|popover).js"
   ],
 	theme: {
 		extend: {
@@ -59,13 +59,27 @@ export default {
 					4: 'hsl(var(--chart-4))',
 					5: 'hsl(var(--chart-5))',
 				},
+				sidebar: {
+					DEFAULT: 'hsl(var(--sidebar-background))',
+					foreground: 'hsl(var(--sidebar-foreground))',
+					primary: 'hsl(var(--sidebar-primary))',
+					'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+					accent: 'hsl(var(--sidebar-accent))',
+					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+					border: 'hsl(var(--sidebar-border))',
+					ring: 'hsl(var(--sidebar-ring))',
+				},
 			},
 			fontFamily: {
 				geist: "'Geist', 'Segoe UI', 'serif'",
 			},
 		},
 	},
-	plugins: [require('tailwindcss-animate'), addVariablesForColors, nextui()],
+	plugins: [
+		require('tailwindcss-animate'),
+		addVariablesForColors,
+		heroui({ defaultTheme: 'dark' }),
+	],
 }
 
 function addVariablesForColors({ addBase, theme }) {

@@ -1,4 +1,4 @@
-import { Button } from '@nextui-org/button'
+import { Button } from "@heroui/button"
 import { BackgroundBeams } from '../../components/ui/background-beams'
 import { Link } from 'react-router'
 

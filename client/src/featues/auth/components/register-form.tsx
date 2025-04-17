@@ -2,11 +2,12 @@ import Form from '@/components/ui/form/form'
 import Input from '@/components/ui/form/input'
 import { useRegister } from '@/hooks/auth'
 import { registerFormSchema } from '@/types/auth'
-import { Button } from '@nextui-org/button'
+import { Button } from "@heroui/button"
 import { Link, Navigate } from 'react-router'
 import { z } from 'zod'
 
 const defaultValues = {
+	username: '',
 	email: '',
 	password: '',
 }
@@ -29,6 +30,13 @@ const RegisterForm = () => {
 		>
 			{form => (
 				<>
+					<Input
+						type='text'
+						name='username'
+						label='Username'
+						control={form.control}
+						variant='dashed'
+					/>
 					<Input
 						type='email'
 						name='email'

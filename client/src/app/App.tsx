@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { AppRouter } from './router'
-import { NextUIProvider } from '@nextui-org/system'
+import { HeroUIProvider } from "@heroui/system"
 import { Toaster } from '@/components/ui/sonner'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
@@ -10,10 +10,10 @@ const App = () => {
 	return (
 		<Suspense fallback={'Loading...'}>
 			<QueryClientProvider client={queryClient}>
-				<NextUIProvider>
+				<HeroUIProvider>
 					<AppRouter />
 					<Toaster richColors closeButton />
-				</NextUIProvider>
+				</HeroUIProvider>
 			</QueryClientProvider>
 		</Suspense>
 	)

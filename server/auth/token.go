@@ -53,3 +53,13 @@ func VerifyToken(token string) (*Claims, error) {
 
 	return &claims, nil
 }
+
+func GetIdFromToken(token string) (uuid.UUID, error) {
+	claims, err := VerifyToken(token)
+
+	if err != nil {
+		return uuid.Nil, err
+	}
+
+	return claims.ID, nil
+}
