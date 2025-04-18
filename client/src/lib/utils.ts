@@ -20,10 +20,14 @@ export const inputTypeToSchemaType: { [key: string]: ZodType } = {
 	text: z.string().min(3, 'Minimum 3 characters'),
 	textarea: z.string().min(3, 'Minimum 3 characters'),
 	number: z.number({ message: 'Please enter a number' }),
+	dropdown: z.string().min(1, 'Required'),
 }
 
 export const defaultValues: { [key: string]: unknown } = {
 	text: '',
+	texarea: '',
+	number: '',
+	dropdown: '',
 }
 
 export const groupBy = <T>(

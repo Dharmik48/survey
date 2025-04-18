@@ -66,6 +66,7 @@ const Survey = () => {
 														name={field.id}
 														type={field.type}
 														control={form.control}
+														options={field.options}
 													/>
 												</div>
 											</div>

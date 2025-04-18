@@ -8,6 +8,7 @@ export type Field = {
 	label: string
 	name: string | null
 	type: FieldTypes
+	options: string
 }
 
 export type FieldWithSurveyID = {
@@ -15,6 +16,7 @@ export type FieldWithSurveyID = {
 	label: string
 	name: string | null
 	type: FieldTypes
+	options: string
 	surveyID: string
 }
 
