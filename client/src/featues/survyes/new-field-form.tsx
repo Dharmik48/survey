@@ -41,7 +41,6 @@ const NewFieldForm = ({
 			}, 'Already assigned to another field'),
 		options: z
 			.string()
-			.min(3, 'Must be atleast 3 characters')
 			.refine(val => {
 				if (!['dropdown', 'radio', 'multichoice'].includes(type)) return true
 
@@ -80,6 +79,7 @@ const NewFieldForm = ({
 									label='Options'
 									name='options'
 									type={'text'}
+									placeholder='Seperate by comma(,)'
 								/>
 							)}
 							<Button

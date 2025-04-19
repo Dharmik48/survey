@@ -7,17 +7,11 @@ import {
 	FormMessage,
 } from '../form'
 import { Input as ShadcnInput } from '../input'
-import { Eye, EyeOff, Info } from 'lucide-react'
+import { Eye, EyeOff } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { HTMLInputTypeAttribute, useState } from 'react'
 import { Button } from '../button'
 import { Textarea } from '@/components/ui/textarea'
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from '@/components/ui/tooltip'
 import {
 	Select,
 	SelectContent,
@@ -34,15 +28,17 @@ type InputWrapperProps = {
 	type?: HTMLInputTypeAttribute | 'textarea'
 	variant?: 'default' | 'dashed'
 	options?: string
+	placeholder?: string
 }
 
 type InputProps = {
 	type?: HTMLInputTypeAttribute | 'textarea'
-	variant: 'default' | 'dashed'
+	variant?: 'default' | 'dashed'
 	className?: string
 	options?: string
 	label: string
-	field: ControllerRenderProps<FieldValues, string>
+	field?: ControllerRenderProps<FieldValues, string>
+	placeholder?: string
 }
 
 const variants = {
@@ -52,11 +48,12 @@ const variants = {
 
 export const Input = ({
 	type,
-	variant,
+	variant = 'default',
 	className,
 	options,
 	label,
 	field,
+	placeholder,
 }: InputProps) => {
 	const [showPassword, setShowPassword] = useState(false)
 
@@ -88,7 +85,7 @@ export const Input = ({
 			return <Textarea {...field} />
 		case 'dropdown':
 			return (
-				<Select onValueChange={field.onChange} defaultValue={field.value}>
+				<Select onValueChange={field?.onChange} defaultValue={field?.value}>
 					<SelectTrigger>
 						<SelectValue placeholder={`Select ${label}`} />
 					</SelectTrigger>
@@ -104,6 +101,7 @@ export const Input = ({
 			return (
 				<ShadcnInput
 					type={type}
+					placeholder={placeholder}
 					{...field}
 					className={cn(className, variants[variant])}
 				/>
@@ -116,9 +114,7 @@ const InputWrapper = ({
 	name,
 	control,
 	className,
-	type = 'text',
-	variant = 'default',
-	options,
+	...props
 }: InputWrapperProps) => {
 	return (
 		<FormField
@@ -128,7 +124,7 @@ const InputWrapper = ({
 				<FormItem className={cn(className?.container, 'text-left')}>
 					<>
 						<FormLabel>{label}</FormLabel>
-						{['dropdown', 'radio', 'multichoice'].includes(type) && (
+						{/* {['dropdown', 'radio', 'multichoice'].includes(type) && (
 							<TooltipProvider>
 								<Tooltip>
 									<TooltipTrigger asChild>
@@ -139,16 +135,18 @@ const InputWrapper = ({
 									</TooltipContent>
 								</Tooltip>
 							</TooltipProvider>
-						)}
+						)} */}
 					</>
 					<FormControl>
 						<Input
-							type={type}
-							variant={variant}
+							// type={type}
+							// variant={variant}
 							className={className?.input}
-							options={options}
+							// options={options}
 							label={label}
 							field={field}
+							// placeholder={placeholder}
+							{...props}
 						/>
 					</FormControl>
 					<FormMessage />
