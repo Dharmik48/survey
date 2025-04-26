@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/select'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '../label'
+import { Checkbox } from '../checkbox'
 
 type InputWrapperProps = {
 	label: string
@@ -113,11 +114,35 @@ export const Input = ({
 						?.split(',')
 						.map(option => (
 							<div className='flex items-center space-x-2'>
-								<RadioGroupItem value={option.trim()} id='option-one' />
-								<Label htmlFor='option-one'>{option.trim()}</Label>
+								<RadioGroupItem
+									value={option.trim()}
+									id={`${field?.name}-${option.trim()}`}
+								/>
+								<Label htmlFor={`${field?.name}-${option.trim()}`}>
+									{option.trim()}
+								</Label>
 							</div>
 						))}
 				</RadioGroup>
+			)
+		case 'multichoice':
+			return (
+				<div className='space-y-4'>
+					{options
+						?.trim()
+						.split(',')
+						.map(option => (
+							<div className='flex items-center space-x-2'>
+								<Checkbox id={`${field?.name}-${option.trim()}`} />
+								<label
+									htmlFor={`${field?.name}-${option.trim()}`}
+									className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+								>
+									{option.trim()}
+								</label>
+							</div>
+						))}
+				</div>
 			)
 
 		default:
@@ -145,21 +170,7 @@ const InputWrapper = ({
 			name={name}
 			render={({ field }) => (
 				<FormItem className={cn(className?.container, 'text-left')}>
-					<>
-						<FormLabel>{label}</FormLabel>
-						{/* {['dropdown', 'radio', 'multichoice'].includes(type) && (
-							<TooltipProvider>
-								<Tooltip>
-									<TooltipTrigger asChild>
-										<Info className='inline size-4 !mt-0 ml-2' />
-									</TooltipTrigger>
-									<TooltipContent>
-										<p>Seperate by comma(,)</p>
-									</TooltipContent>
-								</Tooltip>
-							</TooltipProvider>
-						)} */}
-					</>
+					<FormLabel>{label}</FormLabel>
 					<FormControl>
 						{props.type === 'radio' ? (
 							<RadioGroup
@@ -181,6 +192,49 @@ const InputWrapper = ({
 										</FormItem>
 									))}
 							</RadioGroup>
+						) : props.type === 'multichoice' ? (
+							<div className='space-y-2'>
+								{props.options
+									?.trim()
+									.split(',')
+									.map(item => (
+										<FormField
+											key={item}
+											control={control}
+											name={name}
+											render={({ field }) => {
+												return (
+													<FormItem
+														key={item}
+														className='flex flex-row items-center space-x-3 space-y-0'
+													>
+														<FormControl>
+															<Checkbox
+																checked={field.value?.includes(item.trim())}
+																onCheckedChange={checked => {
+																	return checked
+																		? field.onChange([
+																				...field.value,
+																				item.trim(),
+																		  ])
+																		: field.onChange(
+																				field.value?.filter(
+																					(value: string) =>
+																						value !== item.trim()
+																				)
+																		  )
+																}}
+															/>
+														</FormControl>
+														<FormLabel className='text-sm font-normal'>
+															{item.trim()}
+														</FormLabel>
+													</FormItem>
+												)
+											}}
+										/>
+									))}
+							</div>
 						) : (
 							<Input
 								className={className?.input}

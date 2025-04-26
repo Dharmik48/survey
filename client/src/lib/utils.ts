@@ -25,6 +25,9 @@ export const inputTypeToSchemaType: { [key: string]: ZodType } = {
 		.refine(val => !isNaN(Number(val)), { message: 'Please enter a number' }),
 	dropdown: z.string().min(1, 'Required'),
 	radio: z.string().min(1, 'Required'),
+	multichoice: z.array(z.string()).refine(value => value.some(item => item), {
+		message: 'You have to select at least one item.',
+	}),
 }
 
 export const defaultValues: { [key: string]: unknown } = {
@@ -32,6 +35,7 @@ export const defaultValues: { [key: string]: unknown } = {
 	texarea: '',
 	dropdown: '',
 	radio: '',
+	multichoice: [],
 }
 
 export const groupBy = <T>(

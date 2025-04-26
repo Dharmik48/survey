@@ -24,7 +24,7 @@ const Survey = () => {
 	const handleSubmit = (values: z.infer<typeof schema>) => {
 		const responseData = Object.keys(values).map(key => ({
 			id: key,
-			value: values[key],
+			value: Array.isArray(values[key]) ? values[key].join(',') : values[key],
 		}))
 
 		newResponse.mutate({ survey: data, data: responseData })
