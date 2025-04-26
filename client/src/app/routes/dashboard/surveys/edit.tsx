@@ -63,6 +63,7 @@ const EditSurvey = () => {
 		}
 		updateSurvey.mutate(updatedData)
 	}
+	console.log(fields)
 
 	return (
 		<>

@@ -23,7 +23,7 @@ const Survey = () => {
 		() =>
 			Object.keys(groups)
 				.filter(group =>
-					['dropdown'].includes(
+					['dropdown', 'radio'].includes(
 						data?.questions.find(q => q.id === group)!.type as string
 					)
 				)

@@ -17,6 +17,8 @@ export default function FieldTypeSelecor({
 		{ value: 'textarea', label: 'Textarea' },
 		{ value: 'number', label: 'Number' },
 		{ value: 'dropdown', label: 'Dropdown' },
+		{ value: 'radio', label: 'Radio' },
+		{ value: 'multichoice', label: 'Multi Choice' },
 	]
 
 	return (

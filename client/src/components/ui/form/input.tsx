@@ -19,6 +19,8 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from '@/components/ui/select'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Label } from '../label'
 
 type InputWrapperProps = {
 	label: string
@@ -90,11 +92,32 @@ export const Input = ({
 						<SelectValue placeholder={`Select ${label}`} />
 					</SelectTrigger>
 					<SelectContent>
-						{options?.split(',').map(option => (
-							<SelectItem value={option}>{option}</SelectItem>
-						))}
+						{options
+							?.trim()
+							?.split(',')
+							.map(option => (
+								<SelectItem value={option}>{option}</SelectItem>
+							))}
 					</SelectContent>
 				</Select>
+			)
+		case 'radio':
+			return (
+				<RadioGroup
+					onValueChange={field?.onChange}
+					defaultValue={field?.value}
+					className='flex flex-col space-y-1'
+				>
+					{options
+						?.trim()
+						?.split(',')
+						.map(option => (
+							<div className='flex items-center space-x-2'>
+								<RadioGroupItem value={option.trim()} id='option-one' />
+								<Label htmlFor='option-one'>{option.trim()}</Label>
+							</div>
+						))}
+				</RadioGroup>
 			)
 
 		default:
@@ -138,16 +161,34 @@ const InputWrapper = ({
 						)} */}
 					</>
 					<FormControl>
-						<Input
-							// type={type}
-							// variant={variant}
-							className={className?.input}
-							// options={options}
-							label={label}
-							field={field}
-							// placeholder={placeholder}
-							{...props}
-						/>
+						{props.type === 'radio' ? (
+							<RadioGroup
+								onValueChange={field.onChange}
+								defaultValue={field.value}
+								className='flex flex-col space-y-1'
+							>
+								{props.options
+									?.trim()
+									.split(',')
+									.map(option => (
+										<FormItem className='flex items-center space-x-3 space-y-0'>
+											<FormControl>
+												<RadioGroupItem value={option.trim()} />
+											</FormControl>
+											<FormLabel className='font-normal'>
+												{option.trim()}
+											</FormLabel>
+										</FormItem>
+									))}
+							</RadioGroup>
+						) : (
+							<Input
+								className={className?.input}
+								label={label}
+								field={field}
+								{...props}
+							/>
+						)}
 					</FormControl>
 					<FormMessage />
 				</FormItem>
