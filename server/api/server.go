@@ -7,6 +7,7 @@ import (
 	"github.com/dharmik48/survey/auth"
 	"github.com/dharmik48/survey/types"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 func NewServer(addr string) (*http.Server) {
@@ -35,9 +36,11 @@ func NewServer(addr string) (*http.Server) {
 	r.HandleFunc("/api/response/{surveyID}", NewResponse).Methods(http.MethodPost)
 	s.HandleFunc("/api/response/{surveyID}", GetResponses).Methods(http.MethodGet)
 
+	handler := cors.Default().Handler(r)
+
 	server := &http.Server{
 		Addr:    addr,
-		Handler: r,
+		Handler: handler,
 	}
 
 	return server
