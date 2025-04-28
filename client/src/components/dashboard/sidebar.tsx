@@ -34,6 +34,7 @@ import {
 	DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
 import DeleteDialog from '../confirm-dialog'
+import { toast } from 'sonner'
 
 const dashboard = [
 	{
@@ -48,6 +49,13 @@ const AppSidebar = () => {
 	const { isMobile } = useSidebar()
 	const createSurvey = useCreateSurvey()
 	const deleteSurvey = useDeleteSurvey()
+
+	const handleCopy = (surveyID: string) => {
+		navigator.clipboard
+			.writeText(`${import.meta.env.VITE_APP_URL}/surveys/${surveyID}`)
+			.then(() => toast.success('Survey URL copied'))
+			.catch(() => toast.error('Failed to copy survey URL'))
+	}
 
 	return (
 		<Sidebar variant='floating'>
@@ -125,7 +133,7 @@ const AppSidebar = () => {
 													<span>Edit Survey</span>
 												</DropdownMenuItem>
 											)}
-											<DropdownMenuItem>
+											<DropdownMenuItem onClick={() => handleCopy(survey.id)}>
 												<Forward className='text-muted-foreground' />
 												<span>Share Survey</span>
 											</DropdownMenuItem>
