@@ -39,6 +39,7 @@ func NewServer(addr string) (*http.Server) {
 	c := cors.New(cors.Options{
     AllowedOrigins: []string{"https://surveysphere-web.vercel.app"},
     AllowCredentials: true,
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
     Debug: true,
 })
 
