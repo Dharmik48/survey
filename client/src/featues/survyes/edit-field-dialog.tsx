@@ -12,13 +12,13 @@ import {
 import { useState } from 'react'
 import NewFieldForm from './new-field-form'
 import { Label } from '@/components/ui/label'
-import { Field } from '@/types/survey'
+import { FieldWithSurveyID } from '@/types/survey'
 import { z } from 'zod'
 
 type EditFieldDialogProps = {
-	setFields: React.Dispatch<React.SetStateAction<Field[]>>
-	fields: Field[]
-	field: Field
+	setFields: React.Dispatch<React.SetStateAction<FieldWithSurveyID[]>>
+	fields: FieldWithSurveyID[]
+	field: FieldWithSurveyID
 	index: number
 	children: React.ReactNode
 }

@@ -1,7 +1,7 @@
 import Form from '@/components/ui/form/form'
 import Input, { Input as InputWrapper } from '@/components/ui/form/input'
 import { useGetSurvey, useUpdateSurvey } from '@/hooks/survey'
-import { Field, surveySchema } from '@/types/survey'
+import { FieldWithSurveyID, surveySchema } from '@/types/survey'
 import { Button } from '@/components/ui/button'
 import { useParams } from 'react-router'
 import { Separator } from '@/components/ui/separator'
@@ -15,7 +15,7 @@ import ConfirmDialog from '@/components/confirm-dialog'
 
 const EditSurvey = () => {
 	const params = useParams()
-	const [fields, setFields] = useState<Field[]>([])
+	const [fields, setFields] = useState<FieldWithSurveyID[]>([])
 	const { data, isPending } = useGetSurvey(params.id!)
 	const updateSurvey = useUpdateSurvey()
 
@@ -50,7 +50,7 @@ const EditSurvey = () => {
 		updateSurvey.mutate(updatedData)
 	}
 
-	const handleDelete = async (field: Field) => {
+	const handleDelete = async (field: FieldWithSurveyID) => {
 		setFields(prev =>
 			prev.map(f => (f.name !== field.name ? f : { ...f, name: null }))
 		)

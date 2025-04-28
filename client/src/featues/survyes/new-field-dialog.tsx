@@ -14,13 +14,13 @@ import { cn } from '@/lib/utils'
 import { useState } from 'react'
 import FieldTypeSelecor from '@/components/field-type-selector'
 import NewFieldForm from './new-field-form'
-import { Field, FieldTypes } from '@/types/survey'
+import { FieldTypes, FieldWithSurveyID } from '@/types/survey'
 import { Label } from '@/components/ui/label'
 import { z } from 'zod'
 
 type NewFieldDialogProps = {
-	setFields: React.Dispatch<React.SetStateAction<Field[]>>
-	fields: Field[]
+	setFields: React.Dispatch<React.SetStateAction<FieldWithSurveyID[]>>
+	fields: FieldWithSurveyID[]
 	children: React.ReactNode
 }
 
@@ -34,7 +34,10 @@ const NewFieldDialog = ({
 	const [fieldType, setFieldType] = useState<FieldTypes>('text')
 
 	const handleSubmit = (values: z.infer<z.Schema>) => {
-		setFields((prev: Field[]) => [...prev, { ...values, type: fieldType }])
+		setFields((prev: FieldWithSurveyID[]) => [
+			...prev,
+			{ ...values, type: fieldType },
+		])
 		setIsOpen(false)
 	}
 

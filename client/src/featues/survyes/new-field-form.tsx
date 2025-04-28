@@ -1,14 +1,14 @@
 import { Button } from '@/components/ui/button'
 import Form from '@/components/ui/form/form'
 import Input from '@/components/ui/form/input'
-import { Field, FieldTypes } from '@/types/survey'
+import { FieldTypes, FieldWithSurveyID } from '@/types/survey'
 import { z } from 'zod'
 
 type NewFieldFormProps = {
 	type: FieldTypes
-	fields: Field[]
+	fields: FieldWithSurveyID[]
 	handleSubmit: (values: z.infer<z.Schema>) => void
-	defaultValues?: { label: string; name: string; options: string }
+	defaultValues?: FieldWithSurveyID
 	action: 'edit' | 'create'
 	index?: number
 }
