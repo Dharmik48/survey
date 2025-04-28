@@ -104,7 +104,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		Value: jwt,
 		Expires: time.Now().Add(time.Hour * 24 * 7),
 		HttpOnly: true,
-		SameSite: http.SameSiteStrictMode,
+		SameSite: http.SameSiteNoneMode,
 		Secure: true,
 	})
 
