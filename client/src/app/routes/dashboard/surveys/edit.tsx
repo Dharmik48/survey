@@ -63,6 +63,7 @@ const EditSurvey = () => {
 		}
 		updateSurvey.mutate(updatedData)
 	}
+	console.log(fields)
 
 	return (
 		<>
@@ -132,7 +133,12 @@ const EditSurvey = () => {
 									>
 										<div className='space-y-2 w-full'>
 											<Label className=''>{field.label}</Label>
-											<InputWrapper variant='default' type={field.type} />
+											<InputWrapper
+												options={field.options}
+												variant='default'
+												type={field.type}
+												label={field.label}
+											/>
 										</div>
 										{!data.published && (
 											<div className='flex gap-2'>

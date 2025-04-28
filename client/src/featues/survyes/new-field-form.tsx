@@ -8,7 +8,7 @@ type NewFieldFormProps = {
 	type: FieldTypes
 	fields: Field[]
 	handleSubmit: (values: z.infer<z.Schema>) => void
-	defaultValues?: { label: string; name: string }
+	defaultValues?: { label: string; name: string; options: string }
 	action: 'edit' | 'create'
 	index?: number
 }
@@ -39,6 +39,21 @@ const NewFieldForm = ({
 					return field.name === val
 				})
 			}, 'Already assigned to another field'),
+		options: z
+			.string()
+			.refine(val => {
+				if (!['dropdown', 'radio', 'multichoice'].includes(type)) return true
+
+				if (val.split(',').length < 2) return false
+
+				return true
+			}, 'Must include ateast 2 options')
+			.refine(val => {
+				if (!['dropdown', 'radio', 'multichoice'].includes(type)) return true
+				if (val.split(',').length > 10) return false
+
+				return true
+			}, 'Cannot add more than 10 options'),
 	})
 
 	switch (type) {
@@ -48,6 +63,7 @@ const NewFieldForm = ({
 					defaultValues={{
 						label: defaultValues?.label ?? '',
 						name: defaultValues?.name ?? '',
+						options: defaultValues?.options ?? '',
 					}}
 					onSubmit={handleSubmit}
 					schema={newFieldSchema}
@@ -57,6 +73,15 @@ const NewFieldForm = ({
 						<>
 							<Input control={form.control} label='Label' name='label' />
 							<Input control={form.control} label='Name' name='name' />
+							{['dropdown', 'radio', 'multichoice'].includes(type) && (
+								<Input
+									control={form.control}
+									label='Options'
+									name='options'
+									type={'text'}
+									placeholder='Seperate by comma(,)'
+								/>
+							)}
 							<Button
 								type='submit'
 								form='new-field-form'

@@ -19,11 +19,23 @@ export function getPathFromBreadcrumb(paths: string[], index: number): string {
 export const inputTypeToSchemaType: { [key: string]: ZodType } = {
 	text: z.string().min(3, 'Minimum 3 characters'),
 	textarea: z.string().min(3, 'Minimum 3 characters'),
-	number: z.number({ message: 'Please enter a number' }),
+	number: z
+		.string()
+		.min(1, 'Required')
+		.refine(val => !isNaN(Number(val)), { message: 'Please enter a number' }),
+	dropdown: z.string().min(1, 'Required'),
+	radio: z.string().min(1, 'Required'),
+	multichoice: z.array(z.string()).refine(value => value.some(item => item), {
+		message: 'You have to select at least one item.',
+	}),
 }
 
 export const defaultValues: { [key: string]: unknown } = {
 	text: '',
+	texarea: '',
+	dropdown: '',
+	radio: '',
+	multichoice: [],
 }
 
 export const groupBy = <T>(

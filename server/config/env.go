@@ -3,8 +3,6 @@ package config
 import (
 	"log"
 	"os"
-
-	"github.com/joho/godotenv"
 )
 
 type Config struct {
@@ -22,11 +20,11 @@ func New() Config {
 }
 
 func getEnv(key string) string {
-	err := godotenv.Load(".env.local")
+	// err := godotenv.Load()
 
-	if err != nil {
-		log.Fatal("Error loading .env: ", err)
-	}
+	// if err != nil {
+	// 	log.Fatal("Error loading .env: ", err)
+	// }
 
 	value := os.Getenv(key)
 
