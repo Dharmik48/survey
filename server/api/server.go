@@ -36,7 +36,13 @@ func NewServer(addr string) (*http.Server) {
 	r.HandleFunc("/api/response/{surveyID}", NewResponse).Methods(http.MethodPost)
 	s.HandleFunc("/api/response/{surveyID}", GetResponses).Methods(http.MethodGet)
 
-	handler := cors.Default().Handler(r)
+	c := cors.New(cors.Options{
+    AllowedOrigins: []string{"https://surveysphere-web.vercel.app"},
+    AllowCredentials: true,
+    Debug: true,
+})
+
+	handler := c.Handler(r)
 
 	server := &http.Server{
 		Addr:    addr,
