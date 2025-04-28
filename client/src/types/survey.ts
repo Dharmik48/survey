@@ -6,7 +6,7 @@ export type FieldTypes = HTMLInputTypeAttribute | 'textarea'
 export type Field = {
 	id: string
 	label: string
-	name: string | null
+	name: string
 	type: FieldTypes
 	options: string
 }
